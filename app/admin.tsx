@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Colors } from '@/constants';
+import { Fonts } from '@/constants/styles';
 import { useHouseholds } from '@/lib/HouseholdsContext';
 import { Household } from '@/lib/supabase';
 
@@ -162,15 +163,17 @@ const styles = StyleSheet.create({
   summaryRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 4,
+    marginBottom: 6,
   },
   summaryLabel: {
     color: Colors.textSecondary,
-    fontSize: 14,
+    fontSize: 16,
+    fontFamily: Fonts.regular,
   },
   summaryValue: {
-    fontWeight: '600',
-    fontSize: 14,
+    fontFamily: Fonts.regular,
+    fontSize: 18,
+    letterSpacing: 1,
   },
   searchContainer: {
     backgroundColor: Colors.surface,
@@ -181,20 +184,21 @@ const styles = StyleSheet.create({
   searchInput: {
     backgroundColor: Colors.background,
     borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
     fontSize: 16,
-    marginBottom: 8,
+    marginBottom: 10,
+    fontFamily: Fonts.regular,
     color: Colors.text,
   },
   filterButtons: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 10,
   },
   filterButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    borderRadius: 16,
+    paddingHorizontal: 18,
+    paddingVertical: 8,
+    borderRadius: 20,
     backgroundColor: Colors.background,
   },
   filterButtonActive: {
@@ -202,11 +206,12 @@ const styles = StyleSheet.create({
   },
   filterText: {
     color: Colors.textSecondary,
-    fontSize: 14,
+    fontSize: 16,
+    fontFamily: Fonts.regular,
   },
   filterTextActive: {
     color: '#fff',
-    fontWeight: '600',
+    letterSpacing: 1,
   },
   list: {
     paddingVertical: 8,
@@ -216,7 +221,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.surface,
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 14,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
@@ -224,24 +229,27 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   address: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 18,
+    fontFamily: Fonts.regular,
     color: Colors.text,
+    letterSpacing: 1,
   },
   name: {
     fontSize: 14,
     color: Colors.textSecondary,
     marginTop: 2,
+    fontFamily: Fonts.regular,
   },
   statusBadge: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
   },
   statusText: {
     color: '#fff',
-    fontWeight: 'bold',
+    fontFamily: Fonts.regular,
+    fontSize: 16,
   },
 });

@@ -4,6 +4,7 @@ import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Link } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
 import { Colors, PARK_LOCATION } from '@/constants';
+import { Fonts } from '@/constants/styles';
 import { useHouseholds } from '@/lib/HouseholdsContext';
 
 export default function MapScreen() {
@@ -123,27 +124,32 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 10,
     color: Colors.textSecondary,
+    fontFamily: Fonts.regular,
+    fontSize: 18,
   },
   errorText: {
     color: Colors.error,
-    fontSize: 16,
+    fontSize: 18,
+    fontFamily: Fonts.regular,
     textAlign: 'center',
     marginBottom: 20,
   },
   retryButton: {
     backgroundColor: Colors.primary,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
     borderRadius: 8,
   },
   retryText: {
     color: '#fff',
-    fontWeight: '600',
+    fontFamily: Fonts.regular,
+    fontSize: 18,
+    letterSpacing: 1,
   },
   statsBanner: {
     flexDirection: 'row',
     backgroundColor: Colors.surface,
-    paddingVertical: 12,
+    paddingVertical: 16,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
@@ -154,18 +160,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statNumber: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 32,
+    fontFamily: Fonts.regular,
     color: Colors.primary,
+    letterSpacing: 1,
   },
   statLabel: {
-    fontSize: 12,
+    fontSize: 14,
     color: Colors.textSecondary,
     marginTop: 2,
+    fontFamily: Fonts.regular,
   },
   statDivider: {
     width: 1,
-    height: 30,
+    height: 40,
     backgroundColor: Colors.border,
   },
   map: {
@@ -173,46 +181,51 @@ const styles = StyleSheet.create({
   },
   callout: {
     width: 200,
-    padding: 10,
+    padding: 12,
   },
   calloutTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: 18,
+    fontFamily: Fonts.regular,
     marginBottom: 4,
   },
   calloutName: {
-    fontSize: 12,
+    fontSize: 14,
     color: Colors.textSecondary,
     marginBottom: 8,
+    fontFamily: Fonts.regular,
   },
   calloutStatus: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 16,
+    fontFamily: Fonts.regular,
     marginBottom: 10,
+    letterSpacing: 1,
   },
   calloutButton: {
     backgroundColor: Colors.primary,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     borderRadius: 4,
     alignItems: 'center',
   },
   calloutButtonText: {
     color: '#fff',
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: 14,
+    fontFamily: Fonts.regular,
+    letterSpacing: 1,
   },
   adminButton: {
     position: 'absolute',
     bottom: 20,
     right: 20,
-    backgroundColor: Colors.secondary,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    backgroundColor: '#1976D2',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
     borderRadius: 8,
   },
   adminButtonText: {
     color: '#fff',
-    fontWeight: '600',
+    fontFamily: Fonts.regular,
+    fontSize: 18,
+    letterSpacing: 1,
   },
 });
