@@ -38,7 +38,6 @@ export default function TabsLayout() {
         options={{
           title: 'Calendar',
           headerTitleStyle: { fontFamily: Fonts.headline, fontSize: 24 },
-          tabBarLabel: 'Calendar of Events',
           tabBarIcon: ({ color, size }) => (
             <Feather name="calendar" size={size} color={color} />
           ),
