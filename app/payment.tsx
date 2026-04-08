@@ -142,7 +142,7 @@ export default function PaymentScreen() {
           title: 'Membership Payment',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: '#fff',
-          headerBackTitle: '',
+          headerBackTitle: 'Back',
         }}
       />
       <ImageBackground 
