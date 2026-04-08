@@ -13,15 +13,24 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import { Colors } from '@/constants';
 import { Fonts } from '@/constants/styles';
+import { useHouseholds } from '@/lib/HouseholdsContext';
 
 const ADMIN_PASSWORD = 'hca2024';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { stats, refresh } = useHouseholds();
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [password, setPassword] = useState('');
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refresh();
+    }, [refresh])
+  );
 
   function handleAdminPress() {
     setShowPasswordModal(true);
@@ -95,18 +104,18 @@ export default function HomeScreen() {
             <Text style={styles.statsTitle}>COMMUNITY PROGRESS</Text>
             <View style={styles.statsRow}>
               <View style={styles.stat}>
-                <Text style={styles.statNumber}>381</Text>
+                <Text style={styles.statNumber}>{stats.percentagePaid}%</Text>
+                <Text style={styles.statLabel}>Collected</Text>
+              </View>
+              <View style={styles.statDivider} />
+              <View style={styles.stat}>
+                <Text style={styles.statNumber}>{stats.paidCount}/{stats.total}</Text>
                 <Text style={styles.statLabel}>Households</Text>
               </View>
               <View style={styles.statDivider} />
               <View style={styles.stat}>
-                <Text style={styles.statNumber}>26</Text>
-                <Text style={styles.statLabel}>Streets</Text>
-              </View>
-              <View style={styles.statDivider} />
-              <View style={styles.stat}>
-                <Text style={styles.statNumber}>07463</Text>
-                <Text style={styles.statLabel}>Zip Code</Text>
+                <Text style={[styles.statNumber, { color: '#F44336' }]}>{stats.unpaidCount}</Text>
+                <Text style={styles.statLabel}>Unpaid</Text>
               </View>
             </View>
           </View>
@@ -244,7 +253,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: 'rgba(30, 136, 229, 0.1)',
+    backgroundColor: 'rgba(50, 50, 123, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 14,
@@ -271,7 +280,7 @@ const styles = StyleSheet.create({
   },
   statsTitle: {
     fontFamily: Fonts.headline,
-    fontSize: 18,
+    fontSize: 28,
     color: Colors.primary,
     letterSpacing: 2,
     textAlign: 'center',
