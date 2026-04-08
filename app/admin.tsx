@@ -10,6 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { Stack } from 'expo-router';
 import { Colors } from '@/constants';
 import { Fonts } from '@/constants/styles';
 import { useHouseholds } from '@/lib/HouseholdsContext';
@@ -58,7 +59,21 @@ export default function AdminScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <>
+      <Stack.Screen 
+        options={{
+          headerTitle: 'ADMIN DASHBOARD',
+          headerTitleAlign: 'center',
+          headerStyle: { backgroundColor: Colors.primary },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontFamily: 'BebasNeue',
+            fontSize: 24,
+            letterSpacing: 2,
+          },
+        }}
+      />
+      <View style={styles.container}>
       {/* Summary Stats */}
       <View style={styles.summary}>
         <View style={styles.summaryRow}>
@@ -141,6 +156,7 @@ export default function AdminScreen() {
         contentContainerStyle={styles.list}
       />
     </View>
+    </>
   );
 }
 
@@ -156,23 +172,23 @@ const styles = StyleSheet.create({
   },
   summary: {
     backgroundColor: Colors.surface,
-    padding: 18,
+    padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
   summaryRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 6,
+    marginBottom: 8,
   },
   summaryLabel: {
     color: Colors.textSecondary,
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: Fonts.regular,
   },
   summaryValue: {
     fontFamily: Fonts.regular,
-    fontSize: 20,
+    fontSize: 24,
     letterSpacing: 1,
   },
   searchContainer: {
