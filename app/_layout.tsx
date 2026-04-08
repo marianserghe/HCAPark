@@ -9,9 +9,10 @@ export default function RootLayout() {
         <Stack.Screen 
           name="index" 
           options={{ 
-            headerTitle: 'HCA PARK DUES',
+            headerTitle: 'HCA Park',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
+            headerBackTitle: 'Back',
           }} 
         />
         <Stack.Screen 
@@ -20,6 +21,7 @@ export default function RootLayout() {
             headerTitle: 'ADMIN DASHBOARD',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
+            headerBackTitle: '',
           }} 
         />
         <Stack.Screen 
@@ -28,6 +30,7 @@ export default function RootLayout() {
             headerTitle: 'HOUSEHOLD',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
+            headerBackTitle: '',
           }} 
         />
       </Stack>
