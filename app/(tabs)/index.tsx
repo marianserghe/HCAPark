@@ -72,7 +72,7 @@ export default function HomeScreen() {
           <View style={styles.buttons}>
             <NavButton 
               icon="calendar"
-              title="Calendar of Events" 
+              title="Calendar" 
               subtitle="See upcoming events & RSVP"
               onPress={() => router.push('/calendar' as never)}
             />
