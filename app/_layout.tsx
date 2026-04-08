@@ -1,4 +1,5 @@
 import { Stack } from 'expo-router';
+import { Image, StyleSheet } from 'react-native';
 import { HouseholdsProvider } from '@/lib/HouseholdsContext';
 import { Colors } from '@/constants';
 
@@ -9,7 +10,13 @@ export default function RootLayout() {
         <Stack.Screen 
           name="index" 
           options={{ 
-            headerTitle: 'HCA Park',
+            headerTitle: () => (
+              <Image 
+                source={require('@/assets/logo.png')}
+                style={styles.logo}
+                tintColor="#fff"
+              />
+            ),
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
           }} 
@@ -34,3 +41,11 @@ export default function RootLayout() {
     </HouseholdsProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  logo: {
+    width: 120,
+    height: 40,
+    resizeMode: 'contain',
+  },
+});
