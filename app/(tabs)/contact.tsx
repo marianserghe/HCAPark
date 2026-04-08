@@ -61,6 +61,7 @@ export default function ContactScreen() {
           title: 'Get in Touch',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: '#fff',
+          headerBackTitle: '',
         }}
       />
       <ScrollView style={styles.container}>

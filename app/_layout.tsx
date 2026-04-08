@@ -39,7 +39,7 @@ export default function RootLayout() {
 
   return (
     <HouseholdsProvider>
-      <Stack>
+      <Stack screenOptions={{ headerBackTitle: '' }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen 
           name="payment" 

@@ -43,6 +43,7 @@ export default function MapScreen() {
             title: 'Pay Dues',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
+            headerBackTitle: '',
           }}
         />
         <View style={styles.centered}>
@@ -61,6 +62,7 @@ export default function MapScreen() {
             title: 'Pay Dues',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
+            headerBackTitle: '',
           }}
         />
         <View style={styles.centered}>
@@ -80,6 +82,7 @@ export default function MapScreen() {
           title: 'Pay Dues',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: '#fff',
+          headerBackTitle: '',
         }}
       />
       <View style={styles.container}>
