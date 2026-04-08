@@ -53,6 +53,7 @@ export default function CalendarScreen() {
             title: 'Calendar',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
+            headerBackTitle: '',
           }}
         />
         <View style={styles.centered}>
@@ -69,6 +70,7 @@ export default function CalendarScreen() {
           title: 'Calendar of Events',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: '#fff',
+          headerBackTitle: '',
         }}
       />
       <ImageBackground 

@@ -67,6 +67,7 @@ export default function MembershipScreen() {
           title: 'Join our Community',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: '#fff',
+          headerBackTitle: '',
         }}
       />
       <ScrollView style={styles.container}>
