@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
-import { useLocalSearchParams, Link } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
+import { Link } from 'expo-router';
 import { Colors, PARK_LOCATION } from '@/constants';
 import { supabase, Household } from '@/lib/supabase';
 
@@ -15,12 +16,35 @@ export default function MapScreen() {
   const paidCount = households.filter(h => h.status === 'paid').length;
   const percentagePaid = totalHouseholds > 0 ? Math.round((paidCount / totalHouseholds) * 100) : 0;
 
+  // Reload households when screen comes into focus
+  useFocusEffect(
+    React.useCallback(() => {
+      loadHouseholds();
+    }, [])
+  );
+
+  // Real-time subscription for updates
   useEffect(() => {
-    loadHouseholds();
+    const channel = supabase
+      .channel('households-changes')
+      .on('postgres_changes', 
+        { event: 'UPDATE', schema: 'public', table: 'households' },
+        (payload) => {
+          setHouseholds(prev => 
+            prev.map(h => h.id === payload.new.id ? payload.new as Household : h)
+          );
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   async function loadHouseholds() {
     try {
+      setLoading(true);
       const { data, error } = await supabase
         .from('households')
         .select('*')
