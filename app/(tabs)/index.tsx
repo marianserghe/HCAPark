@@ -46,13 +46,6 @@ export default function HomeScreen() {
       resizeMode="cover"
     >
       <View style={styles.overlay}>
-        {/* Hamburger Menu */}
-        <TouchableOpacity style={styles.menuButton} onPress={handleAdminPress}>
-          <View style={styles.menuBar} />
-          <View style={styles.menuBar} />
-          <View style={styles.menuBar} />
-        </TouchableOpacity>
-
         <ScrollView contentContainerStyle={styles.content}>
           {/* Logo */}
           <Image 
@@ -117,6 +110,15 @@ export default function HomeScreen() {
               </View>
             </View>
           </View>
+
+          {/* Admin Link */}
+          <TouchableOpacity 
+            style={styles.adminLink}
+            onPress={handleAdminPress}
+          >
+            <Feather name="settings" size={16} color="rgba(255,255,255,0.5)" />
+            <Text style={styles.adminText}>Admin</Text>
+          </TouchableOpacity>
         </ScrollView>
 
         {/* Admin Password Modal */}
@@ -301,6 +303,19 @@ const styles = StyleSheet.create({
     width: 1,
     height: 40,
     backgroundColor: Colors.border,
+  },
+  adminLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 32,
+    padding: 8,
+  },
+  adminText: {
+    fontFamily: Fonts.body,
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.5)',
+    marginLeft: 6,
   },
   modalOverlay: {
     flex: 1,
