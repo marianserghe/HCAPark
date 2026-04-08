@@ -1,64 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
-import { useFocusEffect } from '@react-navigation/native';
 import { Link } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import { Colors, PARK_LOCATION } from '@/constants';
-import { supabase, Household } from '@/lib/supabase';
+import { useHouseholds } from '@/lib/HouseholdsContext';
 
 export default function MapScreen() {
-  const [households, setHouseholds] = useState<Household[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  
-  // Stats
-  const totalHouseholds = households.length;
-  const paidCount = households.filter(h => h.status === 'paid').length;
-  const percentagePaid = totalHouseholds > 0 ? Math.round((paidCount / totalHouseholds) * 100) : 0;
+  const { households, loading, error, refresh, stats } = useHouseholds();
 
-  // Reload households when screen comes into focus
+  // Refresh data when screen comes into focus
   useFocusEffect(
     React.useCallback(() => {
-      loadHouseholds();
-    }, [])
+      refresh();
+    }, [refresh])
   );
-
-  // Real-time subscription for updates
-  useEffect(() => {
-    const channel = supabase
-      .channel('households-changes')
-      .on('postgres_changes', 
-        { event: 'UPDATE', schema: 'public', table: 'households' },
-        (payload) => {
-          setHouseholds(prev => 
-            prev.map(h => h.id === payload.new.id ? payload.new as Household : h)
-          );
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  async function loadHouseholds() {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('households')
-        .select('*')
-        .order('street', { ascending: true })
-        .order('house_number', { ascending: true });
-      
-      if (error) throw error;
-      setHouseholds(data || []);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   if (loading) {
     return (
@@ -73,7 +29,7 @@ export default function MapScreen() {
     return (
       <View style={styles.centered}>
         <Text style={styles.errorText}>{error}</Text>
-        <TouchableOpacity style={styles.retryButton} onPress={loadHouseholds}>
+        <TouchableOpacity style={styles.retryButton} onPress={refresh}>
           <Text style={styles.retryText}>Retry</Text>
         </TouchableOpacity>
       </View>
@@ -85,18 +41,18 @@ export default function MapScreen() {
       {/* Stats Banner */}
       <View style={styles.statsBanner}>
         <View style={styles.statItem}>
-          <Text style={styles.statNumber}>{percentagePaid}%</Text>
+          <Text style={styles.statNumber}>{stats.percentagePaid}%</Text>
           <Text style={styles.statLabel}>Paid</Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
-          <Text style={styles.statNumber}>{paidCount}/{totalHouseholds}</Text>
+          <Text style={styles.statNumber}>{stats.paidCount}/{stats.total}</Text>
           <Text style={styles.statLabel}>Households</Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
           <Text style={[styles.statNumber, { color: Colors.error }]}>
-            {totalHouseholds - paidCount}
+            {stats.unpaidCount}
           </Text>
           <Text style={styles.statLabel}>Unpaid</Text>
         </View>

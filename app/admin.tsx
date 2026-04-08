@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { 
   View, 
   Text, 
@@ -9,14 +9,22 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import { Colors, DUES_AMOUNT } from '@/constants';
-import { supabase, Household } from '@/lib/supabase';
+import { useFocusEffect } from '@react-navigation/native';
+import { Colors } from '@/constants';
+import { useHouseholds } from '@/lib/HouseholdsContext';
+import { Household } from '@/lib/supabase';
 
 export default function AdminScreen() {
-  const [households, setHouseholds] = useState<Household[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filter, setFilter] = useState<'all' | 'paid' | 'unpaid'>('all');
+  const { households, loading, error, refresh, togglePaid, stats } = useHouseholds();
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const [filter, setFilter] = React.useState<'all' | 'paid' | 'unpaid'>('all');
+
+  // Refresh when screen comes into focus
+  useFocusEffect(
+    React.useCallback(() => {
+      refresh();
+    }, [refresh])
+  );
 
   const filteredHouseholds = households.filter(h => {
     const matchesSearch = 
@@ -32,86 +40,12 @@ export default function AdminScreen() {
     return matchesSearch && matchesFilter;
   });
 
-  const totalCollected = households
-    .filter(h => h.status === 'paid')
-    .reduce((sum, h) => sum + h.amount_paid, 0);
-
-  const expectedTotal = households.length * DUES_AMOUNT;
-
-  useEffect(() => {
-    loadHouseholds();
-  }, []);
-
-  async function loadHouseholds() {
+  async function handleTogglePaid(household: Household) {
     try {
-      const { data, error } = await supabase
-        .from('households')
-        .select('*')
-        .order('street')
-        .order('house_number');
-      
-      if (error) throw error;
-      setHouseholds(data || []);
-    } catch (err: any) {
-      Alert.alert('Error', err.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function togglePaid(household: Household) {
-    const newStatus = household.status === 'paid' ? 'unpaid' : 'paid';
-    const newAmount = newStatus === 'paid' ? DUES_AMOUNT : 0;
-    
-    try {
-      const { error } = await supabase
-        .from('households')
-        .update({ 
-          status: newStatus, 
-          amount_paid: newAmount,
-          paid_at: newStatus === 'paid' ? new Date().toISOString() : null,
-        })
-        .eq('id', household.id);
-      
-      if (error) throw error;
-      
-      // Update local state
-      setHouseholds(prev => 
-        prev.map(h => 
-          h.id === household.id 
-            ? { ...h, status: newStatus, amount_paid: newAmount }
-            : h
-        )
-      );
+      await togglePaid(household);
     } catch (err: any) {
       Alert.alert('Error', err.message);
     }
-  }
-
-  function renderHousehold({ item }: { item: Household }) {
-    return (
-      <TouchableOpacity 
-        style={styles.householdRow}
-        onPress={() => togglePaid(item)}
-      >
-        <View style={styles.householdInfo}>
-          <Text style={styles.address}>
-            {item.house_number} {item.street}
-          </Text>
-          <Text style={styles.name}>
-            {item.last_name}, {item.first_name}
-          </Text>
-        </View>
-        <View style={[
-          styles.statusBadge,
-          { backgroundColor: item.status === 'paid' ? Colors.primary : Colors.error }
-        ]}>
-          <Text style={styles.statusText}>
-            {item.status === 'paid' ? '✓' : '✗'}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    );
   }
 
   if (loading) {
@@ -122,29 +56,27 @@ export default function AdminScreen() {
     );
   }
 
-  const paidCount = households.filter(h => h.status === 'paid').length;
-
   return (
     <View style={styles.container}>
       {/* Summary Stats */}
       <View style={styles.summary}>
         <View style={styles.summaryRow}>
           <Text style={styles.summaryLabel}>Collected:</Text>
-          <Text style={styles.summaryValue}>${totalCollected.toLocaleString()}</Text>
+          <Text style={styles.summaryValue}>${stats.totalCollected.toLocaleString()}</Text>
         </View>
         <View style={styles.summaryRow}>
           <Text style={styles.summaryLabel}>Expected:</Text>
-          <Text style={styles.summaryValue}>${expectedTotal.toLocaleString()}</Text>
+          <Text style={styles.summaryValue}>${stats.expectedTotal.toLocaleString()}</Text>
         </View>
         <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Outstanding:</Text>
+          <Text style={[styles.summaryLabel, { color: Colors.error }]}>Outstanding:</Text>
           <Text style={[styles.summaryValue, { color: Colors.error }]}>
-            ${(expectedTotal - totalCollected).toLocaleString()}
+            ${(stats.expectedTotal - stats.totalCollected).toLocaleString()}
           </Text>
         </View>
         <View style={styles.summaryRow}>
           <Text style={styles.summaryLabel}>Paid:</Text>
-          <Text style={styles.summaryValue}>{paidCount}/{households.length} households</Text>
+          <Text style={styles.summaryValue}>{stats.paidCount}/{stats.total} households</Text>
         </View>
       </View>
 
@@ -155,6 +87,7 @@ export default function AdminScreen() {
           placeholder="Search by street or name..."
           value={searchQuery}
           onChangeText={setSearchQuery}
+          placeholderTextColor={Colors.textSecondary}
         />
         <View style={styles.filterButtons}>
           {(['all', 'paid', 'unpaid'] as const).map(f => (
@@ -181,7 +114,29 @@ export default function AdminScreen() {
       <FlatList
         data={filteredHouseholds}
         keyExtractor={(item) => item.id}
-        renderItem={renderHousehold}
+        renderItem={({ item }) => (
+          <TouchableOpacity 
+            style={styles.householdRow}
+            onPress={() => handleTogglePaid(item)}
+          >
+            <View style={styles.householdInfo}>
+              <Text style={styles.address}>
+                {item.house_number} {item.street}
+              </Text>
+              <Text style={styles.name}>
+                {item.last_name}, {item.first_name}
+              </Text>
+            </View>
+            <View style={[
+              styles.statusBadge,
+              { backgroundColor: item.status === 'paid' ? Colors.primary : Colors.error }
+            ]}>
+              <Text style={styles.statusText}>
+                {item.status === 'paid' ? '✓' : '✗'}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
         contentContainerStyle={styles.list}
       />
     </View>
@@ -230,6 +185,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     fontSize: 16,
     marginBottom: 8,
+    color: Colors.text,
   },
   filterButtons: {
     flexDirection: 'row',
