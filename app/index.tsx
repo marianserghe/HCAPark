@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal, KeyboardAvoidingView, Platform } from 'react-native';
-import MapView, { Marker, Callout, PROVIDER_GOOGLE, Region } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
 import { Colors, PARK_LOCATION } from '@/constants';
@@ -122,22 +122,6 @@ export default function MapScreen() {
                 borderRadius: pinSize / 2,
               }
             ]} />
-            <Callout tooltip>
-              <View style={styles.callout}>
-                <Text style={styles.calloutTitle}>
-                  {household.house_number} {household.street}
-                </Text>
-                <Text style={styles.calloutName}>
-                  {household.last_name}, {household.first_name}
-                </Text>
-                <Text style={[
-                  styles.calloutStatus,
-                  { color: household.status === 'paid' ? '#4CAF50' : '#F44336' }
-                ]}>
-                  {household.status === 'paid' ? '✓ PAID' : '✗ UNPAID'} — TAP TO {household.status === 'paid' ? 'VIEW' : 'PAY'}
-                </Text>
-              </View>
-            </Callout>
           </Marker>
         ))}
       </MapView>
@@ -274,27 +258,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
-  callout: {
-    width: 220,
-    padding: 14,
-  },
-  calloutTitle: {
-    fontSize: 20,
-    fontFamily: Fonts.regular,
-    marginBottom: 4,
-    letterSpacing: 1,
-  },
-  calloutName: {
-    fontSize: 16,
-    color: Colors.textSecondary,
-    marginBottom: 10,
-    fontFamily: Fonts.regular,
-  },
-  calloutStatus: {
-    fontSize: 18,
-    fontFamily: Fonts.regular,
-    letterSpacing: 1,
   },
   mapTypeButton: {
     position: 'absolute',
