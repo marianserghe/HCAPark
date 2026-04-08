@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { Colors } from '@/constants';
 import { Fonts } from '@/constants/styles';
 
@@ -18,44 +19,48 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabIcon emoji="🏠" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="home" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="calendar"
         options={{
           title: 'Calendar',
-          tabBarIcon: ({ color }) => <TabIcon emoji="📅" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="calendar" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="pay-dues"
         options={{
           title: 'Pay Dues',
-          tabBarIcon: ({ color }) => <TabIcon emoji="💰" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="map-pin" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="membership"
         options={{
           title: 'Membership',
-          tabBarIcon: ({ color }) => <TabIcon emoji="🎫" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="award" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="contact"
         options={{
           title: 'Contact',
-          tabBarIcon: ({ color }) => <TabIcon emoji="✉️" color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="mail" size={size} color={color} />
+          ),
         }}
       />
     </Tabs>
-  );
-}
-
-function TabIcon({ emoji, color }: { emoji: string; color: string }) {
-  return (
-    <Text style={styles.emoji}>{emoji}</Text>
   );
 }
 
@@ -71,8 +76,5 @@ const styles = StyleSheet.create({
   tabBarLabel: {
     fontSize: 11,
     fontFamily: Fonts.body,
-  },
-  emoji: {
-    fontSize: 22,
   },
 });

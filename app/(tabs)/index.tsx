@@ -11,6 +11,7 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/constants';
 import { Fonts } from '@/constants/styles';
@@ -68,28 +69,28 @@ export default function HomeScreen() {
           {/* Nav Buttons */}
           <View style={styles.buttons}>
             <NavButton 
-              emoji="📅" 
+              icon="calendar"
               title="Calendar of Events" 
               subtitle="See upcoming events & RSVP"
               onPress={() => router.push('/calendar' as never)}
             />
             
             <NavButton 
-              emoji="💰" 
+              icon="map-pin"
               title="Pay Your Dues" 
               subtitle="Annual membership dues"
               onPress={() => router.push('/pay-dues' as never)}
             />
             
             <NavButton 
-              emoji="🎫" 
+              icon="award"
               title="Membership" 
               subtitle="Pricing & descriptions"
               onPress={() => router.push('/membership' as never)}
             />
             
             <NavButton 
-              emoji="✉️" 
+              icon="mail"
               title="Contact Us" 
               subtitle="Get in touch"
               onPress={() => router.push('/contact' as never)}
@@ -160,24 +161,26 @@ export default function HomeScreen() {
 }
 
 function NavButton({ 
-  emoji, 
+  icon, 
   title, 
   subtitle, 
   onPress 
 }: { 
-  emoji: string; 
+  icon: keyof typeof Feather.glyphMap;
   title: string; 
   subtitle: string; 
   onPress: () => void;
 }) {
   return (
     <TouchableOpacity style={styles.navButton} onPress={onPress}>
-      <Text style={styles.navEmoji}>{emoji}</Text>
+      <View style={styles.navIconWrap}>
+        <Feather name={icon} size={24} color={Colors.primary} />
+      </View>
       <View style={styles.navText}>
         <Text style={styles.navTitle}>{title}</Text>
         <Text style={styles.navSubtitle}>{subtitle}</Text>
       </View>
-      <Text style={styles.navArrow}>›</Text>
+      <Feather name="chevron-right" size={24} color={Colors.primary} />
     </TouchableOpacity>
   );
 }
@@ -235,9 +238,14 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 12,
   },
-  navEmoji: {
-    fontSize: 28,
-    marginRight: 16,
+  navIconWrap: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(30, 136, 229, 0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 14,
   },
   navText: {
     flex: 1,
@@ -253,11 +261,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Colors.textSecondary,
     marginTop: 2,
-  },
-  navArrow: {
-    fontSize: 28,
-    color: Colors.primary,
-    marginLeft: 8,
   },
   statsCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
