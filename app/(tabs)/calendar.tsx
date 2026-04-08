@@ -6,6 +6,7 @@ import {
   ScrollView, 
   ActivityIndicator,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
 
 import { Stack, useRouter } from 'expo-router';
@@ -70,67 +71,82 @@ export default function CalendarScreen() {
           headerTintColor: '#fff',
         }}
       />
-      <ScrollView style={styles.container}>
-        {events.length === 0 ? (
-          <View style={styles.empty}>
-            <Text style={styles.emptyIcon}>📅</Text>
-            <Text style={styles.emptyTitle}>NO UPCOMING EVENTS</Text>
-            <Text style={styles.emptyText}>
-              Check back soon for community events, cleanups, and gatherings!
-            </Text>
-          </View>
-        ) : (
-          events.map(event => (
-            <TouchableOpacity 
-              key={event.id} 
-              style={styles.eventCard}
-              onPress={() => router.push(`/event/${event.id}` as never)}
-            >
-              <View style={styles.eventDate}>
-                <Text style={styles.eventMonth}>
-                  {new Date(event.date).toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}
-                </Text>
-                <Text style={styles.eventDay}>
-                  {new Date(event.date).getDate()}
+      <ImageBackground 
+        source={require('@/assets/home-background.jpg')}
+        style={styles.background}
+        resizeMode="cover"
+      >
+        <View style={styles.overlay}>
+          <ScrollView style={styles.container}>
+            {events.length === 0 ? (
+              <View style={styles.empty}>
+                <Text style={styles.emptyIcon}>📅</Text>
+                <Text style={styles.emptyTitle}>NO UPCOMING EVENTS</Text>
+                <Text style={styles.emptyText}>
+                  Check back soon for community events, cleanups, and gatherings!
                 </Text>
               </View>
-              <View style={styles.eventContent}>
-                <Text style={styles.eventTitle}>{event.title}</Text>
-                <View style={styles.eventMeta}>
-                  <Feather name="clock" size={14} color={Colors.textSecondary} />
-                  <Text style={styles.eventTime}>{event.time}</Text>
-                  <Feather name="map-pin" size={14} color={Colors.textSecondary} style={{ marginLeft: 12 }} />
-                  <Text style={styles.eventTime}>{event.location}</Text>
-                </View>
-                <Text style={styles.eventDescription} numberOfLines={2}>{event.description}</Text>
-                <View style={styles.eventFooter}>
-                  <View style={styles.rsvpRow}>
-                    <Feather name="users" size={14} color={Colors.primary} />
-                    <Text style={styles.rsvpCount}>
-                      {event.rsvp_count || 0} attending
+            ) : (
+              events.map(event => (
+                <TouchableOpacity 
+                  key={event.id} 
+                  style={styles.eventCard}
+                  onPress={() => router.push(`/event/${event.id}` as never)}
+                >
+                  <View style={styles.eventDate}>
+                    <Text style={styles.eventMonth}>
+                      {new Date(event.date).toLocaleDateString('en-US', { month: 'short' }).toUpperCase()}
+                    </Text>
+                    <Text style={styles.eventDay}>
+                      {new Date(event.date).getDate()}
                     </Text>
                   </View>
-                  <Text style={styles.tapToRsvp}>Tap to RSVP →</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          ))
-        )}
-      </ScrollView>
+                  <View style={styles.eventContent}>
+                    <Text style={styles.eventTitle}>{event.title}</Text>
+                    <View style={styles.eventMeta}>
+                      <Feather name="clock" size={14} color={Colors.textSecondary} />
+                      <Text style={styles.eventTime}>{event.time}</Text>
+                      <Feather name="map-pin" size={14} color={Colors.textSecondary} style={{ marginLeft: 12 }} />
+                      <Text style={styles.eventTime}>{event.location}</Text>
+                    </View>
+                    <Text style={styles.eventDescription} numberOfLines={2}>{event.description}</Text>
+                    <View style={styles.eventFooter}>
+                      <View style={styles.rsvpRow}>
+                        <Feather name="users" size={14} color={Colors.primary} />
+                        <Text style={styles.rsvpCount}>
+                          {event.rsvp_count || 0} attending
+                        </Text>
+                      </View>
+                      <Text style={styles.tapToRsvp}>Tap to RSVP →</Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ))
+            )}
+          </ScrollView>
+        </View>
+      </ImageBackground>
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(50, 50, 123, 0.425)',
+  },
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    padding: 16,
   },
   centered: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.background,
+    backgroundColor: 'rgba(50, 50, 123, 0.425)',
   },
   empty: {
     alignItems: 'center',
@@ -143,21 +159,21 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontFamily: Fonts.headline,
     fontSize: 24,
-    color: Colors.textSecondary,
+    color: '#fff',
     letterSpacing: 2,
     marginBottom: 8,
   },
   emptyText: {
     fontFamily: Fonts.body,
     fontSize: 16,
-    color: Colors.textSecondary,
+    color: 'rgba(255,255,255,0.9)',
     textAlign: 'center',
     lineHeight: 24,
   },
   eventCard: {
     flexDirection: 'row',
-    backgroundColor: Colors.surface,
-    marginHorizontal: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.90)',
+    marginHorizontal: 0,
     marginVertical: 8,
     borderRadius: 12,
     overflow: 'hidden',
