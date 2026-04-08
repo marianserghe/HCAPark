@@ -39,12 +39,12 @@ export default function RootLayout() {
 
   return (
     <HouseholdsProvider>
-      <Stack screenOptions={{ headerBackTitleVisible: false }}>
+      <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen 
           name="payment" 
           options={{ 
-            headerBackTitleVisible: false,
+            headerBackTitle: 'Back',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
           }} 
@@ -52,7 +52,7 @@ export default function RootLayout() {
         <Stack.Screen 
           name="admin" 
           options={{ 
-            headerBackTitleVisible: false,
+            headerBackTitle: 'Back',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
           }} 
@@ -60,7 +60,7 @@ export default function RootLayout() {
         <Stack.Screen 
           name="household/[id]" 
           options={{ 
-            headerBackTitleVisible: false,
+            headerBackTitle: 'Back',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
           }} 
@@ -68,7 +68,7 @@ export default function RootLayout() {
         <Stack.Screen 
           name="event/[id]" 
           options={{ 
-            headerBackTitleVisible: false,
+            headerBackTitle: 'Back',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
           }} 
