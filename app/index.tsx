@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Image } fr
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Link } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
+import { Stack } from 'expo-router';
 import { Colors, PARK_LOCATION } from '@/constants';
 import { Fonts } from '@/constants/styles';
 import { useHouseholds } from '@/lib/HouseholdsContext';
@@ -38,14 +39,23 @@ export default function MapScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <>
+      <Stack.Screen 
+        options={{
+          headerTitle: () => (
+            <Image 
+              source={require('@/assets/icon.png')} 
+              style={styles.headerLogo}
+              resizeMode="contain"
+            />
+          ),
+          headerStyle: { backgroundColor: Colors.primary },
+          headerTintColor: '#fff',
+        }}
+      />
+      <View style={styles.container}>
       {/* Stats Banner */}
       <View style={styles.statsBanner}>
-        <Image 
-          source={require('@/assets/icon.png')} 
-          style={styles.logo}
-          resizeMode="contain"
-        />
         <View style={styles.statItem}>
           <Text style={styles.statNumber}>{stats.percentagePaid}%</Text>
           <Text style={styles.statLabel}>PAID</Text>
@@ -113,12 +123,18 @@ export default function MapScreen() {
         </TouchableOpacity>
       </Link>
     </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  headerLogo: {
+    width: 120,
+    height: 40,
+    tintColor: '#fff',
   },
   centered: {
     flex: 1,
@@ -160,11 +176,6 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.border,
     alignItems: 'center',
     justifyContent: 'space-evenly',
-  },
-  logo: {
-    width: 52,
-    height: 52,
-    marginHorizontal: 4,
   },
   statItem: {
     alignItems: 'center',
