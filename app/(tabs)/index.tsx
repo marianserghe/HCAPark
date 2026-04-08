@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 24,
-    paddingTop: 16,
+    paddingTop: 32,
     paddingBottom: 40,
   },
   logo: {
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
     lineHeight: 26,
   },
   buttons: {
-    marginBottom: 32,
+    marginBottom: 20,
   },
   navButton: {
     flexDirection: 'row',
