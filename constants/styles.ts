@@ -1,38 +1,50 @@
 import { StyleSheet } from 'react-native';
 import { Colors } from './index';
 
-// Bebas Neue font for headers and important text
+// Fonts
 export const Fonts = {
+  headline: 'BebasNeue',
+  body: 'RobotoCondensed',
+  // Alias for backwards compatibility
   regular: 'BebasNeue',
-  fallback: 'System',
 };
 
-// Typography - increased by 15%
+// Typography
 export const Typography = {
   hero: {
-    fontFamily: Fonts.regular,
-    fontSize: 55,  // 48 * 1.15
+    fontFamily: Fonts.headline,
+    fontSize: 55,
     letterSpacing: 2,
   },
   title: {
-    fontFamily: Fonts.regular,
-    fontSize: 37,  // 32 * 1.15
+    fontFamily: Fonts.headline,
+    fontSize: 37,
     letterSpacing: 1,
   },
   heading: {
-    fontFamily: Fonts.regular,
-    fontSize: 28,  // 24 * 1.15
+    fontFamily: Fonts.headline,
+    fontSize: 28,
     letterSpacing: 1,
   },
+  bodyLarge: {
+    fontFamily: Fonts.body,
+    fontSize: 18,
+    lineHeight: 26,
+  },
   body: {
-    fontFamily: Fonts.regular,
-    fontSize: 21,  // 18 * 1.15
-    letterSpacing: 0.5,
+    fontFamily: Fonts.body,
+    fontSize: 16,
+    lineHeight: 22,
+  },
+  bodySmall: {
+    fontFamily: Fonts.body,
+    fontSize: 14,
+    lineHeight: 20,
   },
   caption: {
-    fontFamily: Fonts.regular,
-    fontSize: 16,  // 14 * 1.15
-    letterSpacing: 0.5,
+    fontFamily: Fonts.body,
+    fontSize: 12,
+    lineHeight: 16,
   },
 };
 
@@ -45,8 +57,5 @@ export const globalStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  text: {
-    fontFamily: Fonts.regular,
   },
 });

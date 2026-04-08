@@ -80,7 +80,7 @@ function isValidExpiry(expiry: string): boolean {
 }
 
 // Manual payment instructions
-const MANUAL_INSTRUCTIONS = {
+const MANUAL_INSTRUCTIONS: Record<Exclude<PaymentMethod, 'card'>, { title: string; icon: string; instructions: string[]; note: string }> = {
   venmo: {
     title: 'VENMO',
     icon: '📱',
@@ -408,18 +408,18 @@ export function PaymentModal({
             </ScrollView>
           )}
 
-          {step === 'instructions' && selectedMethod && (
+          {step === 'instructions' && selectedMethod && selectedMethod !== 'card' && (
             <ScrollView style={styles.content}>
               <View style={styles.instructionsCard}>
                 <Text style={styles.instructionsIcon}>
-                  {MANUAL_INSTRUCTIONS[selectedMethod].icon}
+                  {MANUAL_INSTRUCTIONS[selectedMethod as 'venmo' | 'check' | 'cash'].icon}
                 </Text>
                 <Text style={styles.instructionsTitle}>
-                  {MANUAL_INSTRUCTIONS[selectedMethod].title}
+                  {MANUAL_INSTRUCTIONS[selectedMethod as 'venmo' | 'check' | 'cash'].title}
                 </Text>
                 
                 <View style={styles.instructionsBox}>
-                  {MANUAL_INSTRUCTIONS[selectedMethod].instructions.map((line, i) => (
+                  {MANUAL_INSTRUCTIONS[selectedMethod as 'venmo' | 'check' | 'cash'].instructions.map((line: string, i: number) => (
                     <Text key={i} style={styles.instructionLine}>
                       {line}
                     </Text>
@@ -427,7 +427,7 @@ export function PaymentModal({
                 </View>
                 
                 <Text style={styles.instructionsNote}>
-                  {MANUAL_INSTRUCTIONS[selectedMethod].note}
+                  {MANUAL_INSTRUCTIONS[selectedMethod as 'venmo' | 'check' | 'cash'].note}
                 </Text>
                 
                 <Text style={styles.amountDue}>Amount Due: ${DUES_AMOUNT.toFixed(2)}</Text>

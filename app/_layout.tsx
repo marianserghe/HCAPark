@@ -1,30 +1,31 @@
 import { Stack } from 'expo-router';
-import { Image, StyleSheet } from 'react-native';
+import { useFonts } from 'expo-font';
+import { Image, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { HouseholdsProvider } from '@/lib/HouseholdsContext';
 import { Colors } from '@/constants';
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    BebasNeue: require('../assets/fonts/BebasNeue-Regular.ttf'),
+    RobotoCondensed: require('../assets/fonts/RobotoCondensed-Regular.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return (
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    );
+  }
+
   return (
     <HouseholdsProvider>
       <Stack>
-        <Stack.Screen 
-          name="index" 
-          options={{ 
-            headerTitle: () => (
-              <Image 
-                source={require('@/assets/logo.png')}
-                style={styles.logo}
-                tintColor="#fff"
-              />
-            ),
-            headerStyle: { backgroundColor: Colors.primary },
-            headerTintColor: '#fff',
-          }} 
-        />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen 
           name="admin" 
           options={{ 
-            headerBackTitleVisible: false,
+            headerBackTitle: '',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
           }} 
@@ -32,7 +33,15 @@ export default function RootLayout() {
         <Stack.Screen 
           name="household/[id]" 
           options={{ 
-            headerBackTitleVisible: false,
+            headerBackTitle: '',
+            headerStyle: { backgroundColor: Colors.primary },
+            headerTintColor: '#fff',
+          }} 
+        />
+        <Stack.Screen 
+          name="event/[id]" 
+          options={{ 
+            headerBackTitle: '',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
           }} 
@@ -43,9 +52,10 @@ export default function RootLayout() {
 }
 
 const styles = StyleSheet.create({
-  logo: {
-    width: 120,
-    height: 40,
-    resizeMode: 'contain',
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.background,
   },
 });
