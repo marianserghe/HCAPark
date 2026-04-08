@@ -6,6 +6,7 @@ import {
   ScrollView, 
   TouchableOpacity,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Stack, useRouter } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { Colors } from '@/constants';
@@ -58,6 +59,7 @@ const MEMBERSHIP_TIERS = [
 
 export default function MembershipScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   return (
     <>
@@ -68,7 +70,7 @@ export default function MembershipScreen() {
           headerTintColor: '#fff',
         }}
       />
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top + 16 }}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>JOIN OUR COMMUNITY</Text>
           <Text style={styles.headerSubtitle}>

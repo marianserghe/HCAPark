@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useRouter, Stack } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
@@ -17,6 +18,7 @@ export default function MapScreen() {
   const [mapType, setMapType] = useState<'standard' | 'satellite'>('standard');
   const [region, setRegion] = useState(PARK_LOCATION);
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -122,7 +124,7 @@ export default function MapScreen() {
       />
       <View style={styles.container}>
       {/* Stats Banner */}
-      <View style={styles.statsBanner}>
+      <View style={[styles.statsBanner, { paddingTop: insets.top + 8 }]}>
         <View style={styles.statItem}>
           <Text style={styles.statNumber}>{stats.percentagePaid}%</Text>
           <Text style={styles.statLabel}>PAID</Text>

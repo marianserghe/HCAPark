@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Stack, useRouter } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
@@ -14,20 +15,13 @@ import { Colors } from '@/constants';
 import { Fonts } from '@/constants/styles';
 import { supabase } from '@/lib/supabase';
 
-interface Event {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  location: string;
-  rsvp_count: number;
-}
+// ... rest of component
 
 export default function CalendarScreen() {
   const [events, setEvents] = React.useState<Event[]>([]);
   const [loading, setLoading] = React.useState(true);
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -61,7 +55,7 @@ export default function CalendarScreen() {
             headerTintColor: '#fff',
           }}
         />
-        <View style={styles.centered}>
+        <View style={[styles.centered, { paddingTop: insets.top }]}>
           <ActivityIndicator size="large" color={Colors.primary} />
         </View>
       </>
@@ -77,7 +71,7 @@ export default function CalendarScreen() {
           headerTintColor: '#fff',
         }}
       />
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top + 16 }}>
         {events.length === 0 ? (
           <View style={styles.empty}>
             <Text style={styles.emptyIcon}>📅</Text>
