@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { Feather } from '@expo/vector-icons';
-import { useRouter, Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
 import { Colors, PARK_LOCATION } from '@/constants';
 import { Fonts } from '@/constants/styles';
 import { useHouseholds } from '@/lib/HouseholdsContext';
 
-const ADMIN_PASSWORD = 'hca2024';
-
 export default function MapScreen() {
   const { households, loading, error, refresh, stats } = useHouseholds();
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const [password, setPassword] = useState('');
   const [mapType, setMapType] = useState<'standard' | 'satellite'>('standard');
   const [region, setRegion] = useState(PARK_LOCATION);
   const router = useRouter();
@@ -23,22 +19,6 @@ export default function MapScreen() {
       refresh();
     }, [refresh])
   );
-
-  function handleAdminPress() {
-    setShowPasswordModal(true);
-    setPassword('');
-  }
-
-  function handlePasswordSubmit() {
-    if (password === ADMIN_PASSWORD) {
-      setShowPasswordModal(false);
-      setPassword('');
-      router.push('/admin');
-    } else {
-      Alert.alert('Incorrect Password', 'Please try again.');
-      setPassword('');
-    }
-  }
 
   function toggleMapType() {
     setMapType(prev => prev === 'standard' ? 'satellite' : 'standard');
@@ -161,51 +141,6 @@ export default function MapScreen() {
           color={Colors.primary} 
         />
       </TouchableOpacity>
-
-      {/* Admin Link */}
-      <TouchableOpacity style={styles.adminButton} onPress={handleAdminPress}>
-        <Text style={styles.adminButtonText}>ADMIN</Text>
-      </TouchableOpacity>
-
-      {/* Password Modal */}
-      <Modal
-        visible={showPasswordModal}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setShowPasswordModal(false)}
-      >
-        <KeyboardAvoidingView 
-          style={styles.modalOverlay}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>ADMIN ACCESS</Text>
-            <Text style={styles.modalLabel}>Enter password:</Text>
-            <TextInput
-              style={styles.passwordInput}
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              autoFocus
-              onSubmitEditing={handlePasswordSubmit}
-            />
-            <View style={styles.modalButtons}>
-              <TouchableOpacity 
-                style={[styles.modalButton, { backgroundColor: Colors.textSecondary }]}
-                onPress={() => setShowPasswordModal(false)}
-              >
-                <Text style={styles.modalButtonText}>CANCEL</Text>
-              </TouchableOpacity>
-              <TouchableOpacity 
-                style={[styles.modalButton, { backgroundColor: Colors.primary }]}
-                onPress={handlePasswordSubmit}
-              >
-                <Text style={styles.modalButtonText}>ENTER</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </KeyboardAvoidingView>
-      </Modal>
     </View>
     </>
   );
@@ -304,76 +239,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
-  mapTypeText: {
-    fontSize: 24,
-  },
-  adminButton: {
-    position: 'absolute',
-    bottom: 24,
-    right: 20,
-    backgroundColor: Colors.primaryDark,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    borderRadius: 8,
-  },
-  adminButtonText: {
-    color: '#fff',
-    fontFamily: Fonts.regular,
-    fontSize: 21,
-    letterSpacing: 1,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    backgroundColor: Colors.surface,
-    borderRadius: 12,
-    padding: 24,
-    width: '85%',
-    maxWidth: 320,
-  },
-  modalTitle: {
-    fontFamily: Fonts.regular,
-    fontSize: 28,
-    letterSpacing: 2,
-    textAlign: 'center',
-    color: Colors.primary,
-    marginBottom: 20,
-  },
-  modalLabel: {
-    fontFamily: Fonts.regular,
-    fontSize: 18,
-    color: Colors.textSecondary,
-    marginBottom: 8,
-  },
-  passwordInput: {
-    borderWidth: 1,
-    borderColor: Colors.border,
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 18,
-    fontFamily: Fonts.regular,
-    marginBottom: 20,
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  modalButton: {
-    flex: 1,
-    paddingVertical: 14,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  modalButtonText: {
-    color: '#fff',
-    fontFamily: Fonts.regular,
-    fontSize: 18,
-    letterSpacing: 1,
   },
 });
