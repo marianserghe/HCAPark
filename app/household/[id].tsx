@@ -8,7 +8,7 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
-import { useLocalSearchParams, router } from 'expo-router';
+import { useLocalSearchParams, router, Stack } from 'expo-router';
 import { Colors, DUES_AMOUNT, DUES_WITH_FEE } from '@/constants';
 import { Fonts } from '@/constants/styles';
 import { supabase, Household } from '@/lib/supabase';
@@ -18,7 +18,6 @@ export default function HouseholdScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [household, setHousehold] = useState<Household | null>(null);
   const [loading, setLoading] = useState(true);
-  const [processing, setProcessing] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   useEffect(() => {
@@ -43,44 +42,6 @@ export default function HouseholdScreen() {
     } finally {
       setLoading(false);
     }
-  }
-
-  async function handleMarkAsPaid() {
-    if (!household) return;
-    
-    Alert.alert(
-      'Mark as Paid',
-      `Mark ${household.first_name} ${household.last_name}'s dues as paid?\n\nThis is for cash/check/Venmo payments collected by the admin.`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Mark Paid', 
-          onPress: async () => {
-            setProcessing(true);
-            try {
-              const { error } = await supabase
-                .from('households')
-                .update({
-                  status: 'paid',
-                  amount_paid: DUES_AMOUNT,
-                  paid_at: new Date().toISOString(),
-                })
-                .eq('id', household.id);
-              
-              if (error) throw error;
-              
-              Alert.alert('Success', 'Payment recorded successfully!', [
-                { text: 'OK', onPress: () => router.back() }
-              ]);
-            } catch (err: any) {
-              Alert.alert('Error', err.message);
-            } finally {
-              setProcessing(false);
-            }
-          }
-        }
-      ]
-    );
   }
 
   async function handleStripePayment() {
@@ -129,6 +90,12 @@ export default function HouseholdScreen() {
 
   return (
     <>
+      <Stack.Screen 
+        options={{
+          title: `${household.house_number} ${household.street}`,
+          headerBackTitle: 'Back',
+        }}
+      />
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Status Header */}
       <View style={[
@@ -205,20 +172,8 @@ export default function HouseholdScreen() {
             <Text style={styles.primaryButtonText}>PAY NOW — ${DUES_WITH_FEE.toFixed(2)}</Text>
           </TouchableOpacity>
           
-          <Text style={styles.orText}>— OR —</Text>
-          
-          <TouchableOpacity 
-            style={styles.secondaryButton}
-            onPress={handleMarkAsPaid}
-            disabled={processing}
-          >
-            <Text style={styles.secondaryButtonText}>
-              {processing ? 'PROCESSING...' : 'ALREADY PAID? MARK AS PAID'}
-            </Text>
-          </TouchableOpacity>
-          
           <Text style={styles.helpText}>
-            Paid via cash, check, or Venmo? Use "Mark as Paid" to update your status.
+            Venmo, check, or cash? Tap above to see all payment options.
           </Text>
         </View>
       ) : (
@@ -374,27 +329,6 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.regular,
     fontSize: 20,
     color: '#fff',
-    letterSpacing: 1,
-  },
-  orText: {
-    fontFamily: Fonts.regular,
-    fontSize: 16,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    marginVertical: 16,
-  },
-  secondaryButton: {
-    backgroundColor: Colors.surface,
-    borderRadius: 12,
-    padding: 16,
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: Colors.primary,
-  },
-  secondaryButtonText: {
-    fontFamily: Fonts.regular,
-    fontSize: 18,
-    color: Colors.primary,
     letterSpacing: 1,
   },
   helpText: {
