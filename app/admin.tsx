@@ -62,22 +62,22 @@ export default function AdminScreen() {
       {/* Summary Stats */}
       <View style={styles.summary}>
         <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Collected:</Text>
+          <Text style={styles.summaryLabel}>COLLECTED:</Text>
           <Text style={styles.summaryValue}>${stats.totalCollected.toLocaleString()}</Text>
         </View>
         <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Expected:</Text>
+          <Text style={styles.summaryLabel}>EXPECTED:</Text>
           <Text style={styles.summaryValue}>${stats.expectedTotal.toLocaleString()}</Text>
         </View>
         <View style={styles.summaryRow}>
-          <Text style={[styles.summaryLabel, { color: Colors.error }]}>Outstanding:</Text>
+          <Text style={[styles.summaryLabel, { color: Colors.error }]}>OUTSTANDING:</Text>
           <Text style={[styles.summaryValue, { color: Colors.error }]}>
             ${(stats.expectedTotal - stats.totalCollected).toLocaleString()}
           </Text>
         </View>
         <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>Paid:</Text>
-          <Text style={styles.summaryValue}>{stats.paidCount}/{stats.total} households</Text>
+          <Text style={styles.summaryLabel}>PAID:</Text>
+          <Text style={styles.summaryValue}>{stats.paidCount}/{stats.total} HOUSEHOLDS</Text>
         </View>
       </View>
 
@@ -104,7 +104,7 @@ export default function AdminScreen() {
                 styles.filterText,
                 filter === f && styles.filterTextActive
               ]}>
-                {f.charAt(0).toUpperCase() + f.slice(1)}
+                {f.toUpperCase()}
               </Text>
             </TouchableOpacity>
           ))}
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   },
   summary: {
     backgroundColor: Colors.surface,
-    padding: 16,
+    padding: 18,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
@@ -167,37 +167,37 @@ const styles = StyleSheet.create({
   },
   summaryLabel: {
     color: Colors.textSecondary,
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: Fonts.regular,
   },
   summaryValue: {
     fontFamily: Fonts.regular,
-    fontSize: 18,
+    fontSize: 20,
     letterSpacing: 1,
   },
   searchContainer: {
     backgroundColor: Colors.surface,
-    padding: 12,
+    padding: 14,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
   searchInput: {
     backgroundColor: Colors.background,
     borderRadius: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    fontSize: 16,
-    marginBottom: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 18,
+    marginBottom: 12,
     fontFamily: Fonts.regular,
     color: Colors.text,
   },
   filterButtons: {
     flexDirection: 'row',
-    gap: 10,
+    gap: 12,
   },
   filterButton: {
-    paddingHorizontal: 18,
-    paddingVertical: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     borderRadius: 20,
     backgroundColor: Colors.background,
   },
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   filterText: {
     color: Colors.textSecondary,
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: Fonts.regular,
   },
   filterTextActive: {
@@ -220,8 +220,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: Colors.surface,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
+    paddingHorizontal: 18,
+    paddingVertical: 16,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
@@ -229,27 +229,27 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   address: {
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: Fonts.regular,
     color: Colors.text,
     letterSpacing: 1,
   },
   name: {
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.textSecondary,
     marginTop: 2,
     fontFamily: Fonts.regular,
   },
   statusBadge: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
   },
   statusText: {
     color: '#fff',
     fontFamily: Fonts.regular,
-    fontSize: 16,
+    fontSize: 18,
   },
 });

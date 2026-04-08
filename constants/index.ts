@@ -1,6 +1,7 @@
 export const Colors = {
-  primary: '#4CAF50',      // Green - paid
-  secondary: '#2196F3',    // Blue
+  primary: '#1E88E5',      // Blue from logo
+  primaryDark: '#1565C0',  // Darker blue
+  secondary: '#42A5F5',    // Lighter blue
   error: '#F44336',        // Red - unpaid
   warning: '#FF9800',      // Orange
   background: '#F5F5F5',

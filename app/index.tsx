@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Image } from 'react-native';
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import { Link } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
@@ -41,21 +41,26 @@ export default function MapScreen() {
     <View style={styles.container}>
       {/* Stats Banner */}
       <View style={styles.statsBanner}>
+        <Image 
+          source={require('@/assets/icon.png')} 
+          style={styles.logo}
+          resizeMode="contain"
+        />
         <View style={styles.statItem}>
           <Text style={styles.statNumber}>{stats.percentagePaid}%</Text>
-          <Text style={styles.statLabel}>Paid</Text>
+          <Text style={styles.statLabel}>PAID</Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
           <Text style={styles.statNumber}>{stats.paidCount}/{stats.total}</Text>
-          <Text style={styles.statLabel}>Households</Text>
+          <Text style={styles.statLabel}>HOUSEHOLDS</Text>
         </View>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
           <Text style={[styles.statNumber, { color: Colors.error }]}>
             {stats.unpaidCount}
           </Text>
-          <Text style={styles.statLabel}>Unpaid</Text>
+          <Text style={styles.statLabel}>UNPAID</Text>
         </View>
       </View>
 
@@ -91,7 +96,7 @@ export default function MapScreen() {
                 <Link href={`/household/${household.id}`} asChild>
                   <TouchableOpacity style={styles.calloutButton}>
                     <Text style={styles.calloutButtonText}>
-                      {household.status === 'paid' ? 'View Details' : 'Pay Dues'}
+                      {household.status === 'paid' ? 'VIEW DETAILS' : 'PAY DUES'}
                     </Text>
                   </TouchableOpacity>
                 </Link>
@@ -104,7 +109,7 @@ export default function MapScreen() {
       {/* Admin Link */}
       <Link href="/admin" asChild>
         <TouchableOpacity style={styles.adminButton}>
-          <Text style={styles.adminButtonText}>Admin</Text>
+          <Text style={styles.adminButtonText}>ADMIN</Text>
         </TouchableOpacity>
       </Link>
     </View>
@@ -122,39 +127,44 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   loadingText: {
-    marginTop: 10,
+    marginTop: 12,
     color: Colors.textSecondary,
     fontFamily: Fonts.regular,
-    fontSize: 18,
+    fontSize: 21,
   },
   errorText: {
     color: Colors.error,
-    fontSize: 18,
+    fontSize: 21,
     fontFamily: Fonts.regular,
     textAlign: 'center',
     marginBottom: 20,
   },
   retryButton: {
     backgroundColor: Colors.primary,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
+    paddingHorizontal: 28,
+    paddingVertical: 14,
     borderRadius: 8,
   },
   retryText: {
     color: '#fff',
     fontFamily: Fonts.regular,
-    fontSize: 18,
+    fontSize: 21,
     letterSpacing: 1,
   },
   statsBanner: {
     flexDirection: 'row',
     backgroundColor: Colors.surface,
-    paddingVertical: 16,
-    paddingHorizontal: 20,
+    paddingVertical: 14,
+    paddingHorizontal: 12,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
+  },
+  logo: {
+    width: 40,
+    height: 40,
+    marginRight: 8,
   },
   statItem: {
     alignItems: 'center',
@@ -170,6 +180,7 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
     marginTop: 2,
     fontFamily: Fonts.regular,
+    letterSpacing: 1,
   },
   statDivider: {
     width: 1,
@@ -180,52 +191,53 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   callout: {
-    width: 200,
-    padding: 12,
+    width: 220,
+    padding: 14,
   },
   calloutTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: Fonts.regular,
     marginBottom: 4,
+    letterSpacing: 1,
   },
   calloutName: {
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.textSecondary,
-    marginBottom: 8,
+    marginBottom: 10,
     fontFamily: Fonts.regular,
   },
   calloutStatus: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: Fonts.regular,
-    marginBottom: 10,
+    marginBottom: 12,
     letterSpacing: 1,
   },
   calloutButton: {
     backgroundColor: Colors.primary,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingHorizontal: 18,
+    paddingVertical: 10,
     borderRadius: 4,
     alignItems: 'center',
   },
   calloutButtonText: {
     color: '#fff',
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: Fonts.regular,
     letterSpacing: 1,
   },
   adminButton: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 24,
     right: 20,
-    backgroundColor: '#1976D2',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
+    backgroundColor: Colors.primaryDark,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
     borderRadius: 8,
   },
   adminButtonText: {
     color: '#fff',
     fontFamily: Fonts.regular,
-    fontSize: 18,
+    fontSize: 21,
     letterSpacing: 1,
   },
 });

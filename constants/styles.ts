@@ -1,36 +1,37 @@
 import { StyleSheet } from 'react-native';
 import { Colors } from './index';
 
-// Use system font as fallback - Bebas may not load on all devices
+// Bebas Neue font for headers and important text
 export const Fonts = {
   regular: 'BebasNeue',
   fallback: 'System',
 };
 
+// Typography - increased by 15%
 export const Typography = {
   hero: {
     fontFamily: Fonts.regular,
-    fontSize: 48,
+    fontSize: 55,  // 48 * 1.15
     letterSpacing: 2,
   },
   title: {
     fontFamily: Fonts.regular,
-    fontSize: 32,
+    fontSize: 37,  // 32 * 1.15
     letterSpacing: 1,
   },
   heading: {
     fontFamily: Fonts.regular,
-    fontSize: 24,
+    fontSize: 28,  // 24 * 1.15
     letterSpacing: 1,
   },
   body: {
     fontFamily: Fonts.regular,
-    fontSize: 18,
+    fontSize: 21,  // 18 * 1.15
     letterSpacing: 0.5,
   },
   caption: {
     fontFamily: Fonts.regular,
-    fontSize: 14,
+    fontSize: 16,  // 14 * 1.15
     letterSpacing: 0.5,
   },
 };
