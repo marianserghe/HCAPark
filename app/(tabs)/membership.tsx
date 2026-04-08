@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   },
   popularText: {
     fontFamily: Fonts.body,
-    fontSize: 12,
+    fontSize: 14,
     color: '#fff',
     fontWeight: '600',
   },
@@ -182,16 +182,16 @@ const styles = StyleSheet.create({
   },
   tierPricePeriod: {
     fontFamily: Fonts.body,
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.textSecondary,
     marginLeft: 4,
   },
   tierDescription: {
     fontFamily: Fonts.body,
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.textSecondary,
     marginBottom: 16,
-    lineHeight: 20,
+    lineHeight: 22,
   },
   features: {
     marginBottom: 20,
@@ -203,10 +203,10 @@ const styles = StyleSheet.create({
   },
   featureText: {
     fontFamily: Fonts.body,
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.text,
     flex: 1,
-    lineHeight: 20,
+    lineHeight: 22,
     marginLeft: 8,
   },
   selectButton: {
@@ -230,9 +230,9 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontFamily: Fonts.body,
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.textSecondary,
     textAlign: 'center',
-    lineHeight: 22,
+    lineHeight: 24,
   },
 });

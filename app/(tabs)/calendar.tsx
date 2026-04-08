@@ -167,10 +167,10 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontFamily: Fonts.body,
-    fontSize: 16,
+    fontSize: 18,
     color: 'rgba(255,255,255,0.9)',
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: 26,
   },
   eventCard: {
     flexDirection: 'row',
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   },
   eventMonth: {
     fontFamily: Fonts.body,
-    fontSize: 12,
+    fontSize: 14,
     color: 'rgba(255,255,255,0.8)',
     letterSpacing: 1,
   },
@@ -221,15 +221,15 @@ const styles = StyleSheet.create({
   },
   eventTime: {
     fontFamily: Fonts.body,
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.textSecondary,
     marginLeft: 4,
   },
   eventDescription: {
     fontFamily: Fonts.body,
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.text,
-    lineHeight: 20,
+    lineHeight: 22,
     marginBottom: 12,
   },
   eventFooter: {
@@ -243,13 +243,13 @@ const styles = StyleSheet.create({
   },
   rsvpCount: {
     fontFamily: Fonts.body,
-    fontSize: 12,
+    fontSize: 14,
     color: Colors.primary,
     marginLeft: 4,
   },
   tapToRsvp: {
     fontFamily: Fonts.body,
-    fontSize: 12,
+    fontSize: 14,
     color: Colors.textSecondary,
   },
 });

@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
   },
   navSubtitle: {
     fontFamily: Fonts.body,
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.textSecondary,
     marginTop: 2,
   },
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontFamily: Fonts.body,
-    fontSize: 12,
+    fontSize: 14,
     color: Colors.textSecondary,
     marginTop: 4,
     textTransform: 'uppercase',
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
   },
   adminText: {
     fontFamily: Fonts.body,
-    fontSize: 14,
+    fontSize: 16,
     color: 'rgba(255,255,255,0.5)',
     marginLeft: 6,
   },
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
   },
   modalLabel: {
     fontFamily: Fonts.body,
-    fontSize: 16,
+    fontSize: 18,
     color: Colors.textSecondary,
     marginBottom: 8,
   },

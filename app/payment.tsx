@@ -447,13 +447,13 @@ const styles = StyleSheet.create({
   },
   pricePeriod: {
     fontFamily: Fonts.body,
-    fontSize: 16,
+    fontSize: 18,
     color: Colors.textSecondary,
     marginLeft: 4,
   },
   planDescription: {
     fontFamily: Fonts.body,
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.textSecondary,
     textAlign: 'center',
     marginTop: 8,
@@ -502,7 +502,7 @@ const styles = StyleSheet.create({
   },
   methodSubtext: {
     fontFamily: Fonts.body,
-    fontSize: 14,
+    fontSize: 16,
     color: 'rgba(255,255,255,0.7)',
     marginTop: 2,
   },
@@ -590,7 +590,7 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontFamily: Fonts.body,
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.textSecondary,
     marginBottom: 8,
     letterSpacing: 1,
@@ -641,14 +641,14 @@ const styles = StyleSheet.create({
   },
   instructionLine: {
     fontFamily: Fonts.body,
-    fontSize: 16,
+    fontSize: 18,
     color: Colors.text,
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: 26,
   },
   instructionsNote: {
     fontFamily: Fonts.body,
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.textSecondary,
     textAlign: 'center',
     fontStyle: 'italic',

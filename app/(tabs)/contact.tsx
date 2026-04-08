@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   },
   inputLabel: {
     fontFamily: Fonts.body,
-    fontSize: 12,
+    fontSize: 14,
     color: Colors.textSecondary,
     letterSpacing: 1,
     marginBottom: 6,
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontFamily: Fonts.body,
-    fontSize: 16,
+    fontSize: 18,
     color: Colors.text,
     borderWidth: 1,
     borderColor: Colors.border,
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
   },
   socialText: {
     fontFamily: Fonts.body,
-    fontSize: 16,
+    fontSize: 18,
     color: Colors.text,
     marginLeft: 10,
   },
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontFamily: Fonts.body,
-    fontSize: 16,
+    fontSize: 18,
     color: Colors.text,
     marginLeft: 12,
   },

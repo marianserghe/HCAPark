@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   statLabel: {
-    fontSize: 14,
+    fontSize: 16,
     color: Colors.textSecondary,
     marginTop: 2,
     fontFamily: Fonts.regular,

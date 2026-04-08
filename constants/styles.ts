@@ -28,23 +28,23 @@ export const Typography = {
   },
   bodyLarge: {
     fontFamily: Fonts.body,
+    fontSize: 20,
+    lineHeight: 28,
+  },
+  body: {
+    fontFamily: Fonts.body,
     fontSize: 18,
     lineHeight: 26,
   },
-  body: {
+  bodySmall: {
     fontFamily: Fonts.body,
     fontSize: 16,
     lineHeight: 22,
   },
-  bodySmall: {
-    fontFamily: Fonts.body,
-    fontSize: 14,
-    lineHeight: 20,
-  },
   caption: {
     fontFamily: Fonts.body,
-    fontSize: 12,
-    lineHeight: 16,
+    fontSize: 14,
+    lineHeight: 18,
   },
 };
 
