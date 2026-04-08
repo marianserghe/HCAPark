@@ -111,6 +111,7 @@ export default function MapScreen() {
               latitude: household.latitude!,
               longitude: household.longitude!,
             }}
+            onPress={() => router.push(`/household/${household.id}`)}
           >
             <View style={[
               styles.pin,
@@ -121,7 +122,7 @@ export default function MapScreen() {
                 borderRadius: pinSize / 2,
               }
             ]} />
-            <Callout>
+            <Callout tooltip>
               <View style={styles.callout}>
                 <Text style={styles.calloutTitle}>
                   {household.house_number} {household.street}
@@ -133,16 +134,8 @@ export default function MapScreen() {
                   styles.calloutStatus,
                   { color: household.status === 'paid' ? '#4CAF50' : '#F44336' }
                 ]}>
-                  {household.status === 'paid' ? '✓ PAID' : '✗ UNPAID'}
+                  {household.status === 'paid' ? '✓ PAID' : '✗ UNPAID'} — TAP TO {household.status === 'paid' ? 'VIEW' : 'PAY'}
                 </Text>
-                <TouchableOpacity 
-                  style={styles.calloutButton}
-                  onPress={() => router.push(`/household/${household.id}`)}
-                >
-                  <Text style={styles.calloutButtonText}>
-                    {household.status === 'paid' ? 'VIEW DETAILS' : 'PAY DUES'}
-                  </Text>
-                </TouchableOpacity>
               </View>
             </Callout>
           </Marker>
@@ -300,20 +293,6 @@ const styles = StyleSheet.create({
   },
   calloutStatus: {
     fontSize: 18,
-    fontFamily: Fonts.regular,
-    marginBottom: 12,
-    letterSpacing: 1,
-  },
-  calloutButton: {
-    backgroundColor: Colors.primary,
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 4,
-    alignItems: 'center',
-  },
-  calloutButtonText: {
-    color: '#fff',
-    fontSize: 16,
     fontFamily: Fonts.regular,
     letterSpacing: 1,
   },
