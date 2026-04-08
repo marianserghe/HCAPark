@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal, KeyboardAvoidingView, Platform, Image } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal, KeyboardAvoidingView, Platform } from 'react-native';
 import MapView, { Marker, Callout, PROVIDER_GOOGLE, Region } from 'react-native-maps';
 import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
-import { Stack } from 'expo-router';
 import { Colors, PARK_LOCATION } from '@/constants';
 import { Fonts } from '@/constants/styles';
 import { useHouseholds } from '@/lib/HouseholdsContext';
@@ -18,7 +17,6 @@ export default function MapScreen() {
   const [region, setRegion] = useState(PARK_LOCATION);
   const router = useRouter();
 
-  // Refresh data when screen comes into focus
   useFocusEffect(
     React.useCallback(() => {
       refresh();
@@ -45,16 +43,13 @@ export default function MapScreen() {
     setMapType(prev => prev === 'standard' ? 'satellite' : 'standard');
   }
 
-  // Calculate pin size based on zoom level
-  // latitudeDelta ~0.01 = zoomed in (large pins)
-  // latitudeDelta ~0.1 = zoomed out (small pins)
   const getPinSize = () => {
     const delta = region.latitudeDelta;
-    if (delta < 0.005) return 30; // Very zoomed in
-    if (delta < 0.01) return 24;  // Zoomed in
-    if (delta < 0.02) return 20;  // Medium
-    if (delta < 0.05) return 16;  // Zoomed out
-    return 12; // Very zoomed out
+    if (delta < 0.005) return 30;
+    if (delta < 0.01) return 24;
+    if (delta < 0.02) return 20;
+    if (delta < 0.05) return 16;
+    return 12;
   };
 
   const pinSize = getPinSize();
@@ -80,145 +75,132 @@ export default function MapScreen() {
   }
 
   return (
-    <>
-      <Stack.Screen 
-        options={{
-          headerTitle: 'HCA Park',
-          headerStyle: { backgroundColor: Colors.primary },
-          headerTintColor: '#fff',
-        }}
-      />
-      <View style={styles.container}>
-        {/* Stats Banner */}
-        <View style={styles.statsBanner}>
-          <Image 
-            source={require('@/assets/icon.png')} 
-            style={styles.logo}
-            resizeMode="contain"
-          />
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{stats.percentagePaid}%</Text>
-            <Text style={styles.statLabel}>PAID</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statItem}>
-            <Text style={styles.statNumber}>{stats.paidCount}/{stats.total}</Text>
-            <Text style={styles.statLabel}>HOUSEHOLDS</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.statItem}>
-            <Text style={[styles.statNumber, { color: Colors.error }]}>
-              {stats.unpaidCount}
-            </Text>
-            <Text style={styles.statLabel}>UNPAID</Text>
-          </View>
+    <View style={styles.container}>
+      {/* Stats Banner */}
+      <View style={styles.statsBanner}>
+        <View style={styles.statItem}>
+          <Text style={styles.statNumber}>{stats.percentagePaid}%</Text>
+          <Text style={styles.statLabel}>PAID</Text>
         </View>
-
-        {/* Map */}
-        <MapView
-          style={styles.map}
-          provider={PROVIDER_GOOGLE}
-          initialRegion={PARK_LOCATION}
-          mapType={mapType}
-          onRegionChangeComplete={setRegion}
-        >
-          {households.filter(h => h.latitude && h.longitude).map((household) => (
-            <Marker
-              key={household.id}
-              coordinate={{
-                latitude: household.latitude!,
-                longitude: household.longitude!,
-              }}
-            >
-              <View style={[
-                styles.pin,
-                { 
-                  backgroundColor: household.status === 'paid' ? '#4CAF50' : '#F44336',
-                  width: pinSize,
-                  height: pinSize,
-                  borderRadius: pinSize / 2,
-                }
-              ]} />
-              <Callout>
-                <View style={styles.callout}>
-                  <Text style={styles.calloutTitle}>
-                    {household.house_number} {household.street}
-                  </Text>
-                  <Text style={styles.calloutName}>
-                    {household.last_name}, {household.first_name}
-                  </Text>
-                  <Text style={[
-                    styles.calloutStatus,
-                    { color: household.status === 'paid' ? '#4CAF50' : '#F44336' }
-                  ]}>
-                    {household.status === 'paid' ? '✓ PAID' : '✗ UNPAID'}
-                  </Text>
-                  <TouchableOpacity 
-                    style={styles.calloutButton}
-                    onPress={() => router.push(`/household/${household.id}`)}
-                  >
-                    <Text style={styles.calloutButtonText}>
-                      {household.status === 'paid' ? 'VIEW DETAILS' : 'PAY DUES'}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </Callout>
-            </Marker>
-          ))}
-        </MapView>
-
-        {/* Map Type Toggle */}
-        <TouchableOpacity style={styles.mapTypeButton} onPress={toggleMapType}>
-          <Text style={styles.mapTypeText}>
-            {mapType === 'standard' ? '🛰️' : '🗺️'}
+        <View style={styles.statDivider} />
+        <View style={styles.statItem}>
+          <Text style={styles.statNumber}>{stats.paidCount}/{stats.total}</Text>
+          <Text style={styles.statLabel}>HOUSEHOLDS</Text>
+        </View>
+        <View style={styles.statDivider} />
+        <View style={styles.statItem}>
+          <Text style={[styles.statNumber, { color: Colors.error }]}>
+            {stats.unpaidCount}
           </Text>
-        </TouchableOpacity>
+          <Text style={styles.statLabel}>UNPAID</Text>
+        </View>
+      </View>
 
-        {/* Admin Link */}
-        <TouchableOpacity style={styles.adminButton} onPress={handleAdminPress}>
-          <Text style={styles.adminButtonText}>ADMIN</Text>
-        </TouchableOpacity>
-
-        {/* Password Modal */}
-        <Modal
-          visible={showPasswordModal}
-          transparent
-          animationType="fade"
-          onRequestClose={() => setShowPasswordModal(false)}
-        >
-          <KeyboardAvoidingView 
-            style={styles.modalOverlay}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      {/* Map */}
+      <MapView
+        style={styles.map}
+        provider={PROVIDER_GOOGLE}
+        initialRegion={PARK_LOCATION}
+        mapType={mapType}
+        onRegionChangeComplete={setRegion}
+      >
+        {households.filter(h => h.latitude && h.longitude).map((household) => (
+          <Marker
+            key={household.id}
+            coordinate={{
+              latitude: household.latitude!,
+              longitude: household.longitude!,
+            }}
           >
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTitle}>ADMIN ACCESS</Text>
-              <Text style={styles.modalLabel}>Enter password:</Text>
-              <TextInput
-                style={styles.passwordInput}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                autoFocus
-                onSubmitEditing={handlePasswordSubmit}
-              />
-              <View style={styles.modalButtons}>
+            <View style={[
+              styles.pin,
+              { 
+                backgroundColor: household.status === 'paid' ? '#4CAF50' : '#F44336',
+                width: pinSize,
+                height: pinSize,
+                borderRadius: pinSize / 2,
+              }
+            ]} />
+            <Callout>
+              <View style={styles.callout}>
+                <Text style={styles.calloutTitle}>
+                  {household.house_number} {household.street}
+                </Text>
+                <Text style={styles.calloutName}>
+                  {household.last_name}, {household.first_name}
+                </Text>
+                <Text style={[
+                  styles.calloutStatus,
+                  { color: household.status === 'paid' ? '#4CAF50' : '#F44336' }
+                ]}>
+                  {household.status === 'paid' ? '✓ PAID' : '✗ UNPAID'}
+                </Text>
                 <TouchableOpacity 
-                  style={[styles.modalButton, { backgroundColor: Colors.textSecondary }]}
-                  onPress={() => setShowPasswordModal(false)}
+                  style={styles.calloutButton}
+                  onPress={() => router.push(`/household/${household.id}`)}
                 >
-                  <Text style={styles.modalButtonText}>CANCEL</Text>
-                </TouchableOpacity>
-                <TouchableOpacity 
-                  style={[styles.modalButton, { backgroundColor: Colors.primary }]}
-                  onPress={handlePasswordSubmit}
-                >
-                  <Text style={styles.modalButtonText}>ENTER</Text>
+                  <Text style={styles.calloutButtonText}>
+                    {household.status === 'paid' ? 'VIEW DETAILS' : 'PAY DUES'}
+                  </Text>
                 </TouchableOpacity>
               </View>
+            </Callout>
+          </Marker>
+        ))}
+      </MapView>
+
+      {/* Map Type Toggle */}
+      <TouchableOpacity style={styles.mapTypeButton} onPress={toggleMapType}>
+        <Text style={styles.mapTypeText}>
+          {mapType === 'standard' ? '🛰️' : '🗺️'}
+        </Text>
+      </TouchableOpacity>
+
+      {/* Admin Link */}
+      <TouchableOpacity style={styles.adminButton} onPress={handleAdminPress}>
+        <Text style={styles.adminButtonText}>ADMIN</Text>
+      </TouchableOpacity>
+
+      {/* Password Modal */}
+      <Modal
+        visible={showPasswordModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowPasswordModal(false)}
+      >
+        <KeyboardAvoidingView 
+          style={styles.modalOverlay}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>ADMIN ACCESS</Text>
+            <Text style={styles.modalLabel}>Enter password:</Text>
+            <TextInput
+              style={styles.passwordInput}
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
+              autoFocus
+              onSubmitEditing={handlePasswordSubmit}
+            />
+            <View style={styles.modalButtons}>
+              <TouchableOpacity 
+                style={[styles.modalButton, { backgroundColor: Colors.textSecondary }]}
+                onPress={() => setShowPasswordModal(false)}
+              >
+                <Text style={styles.modalButtonText}>CANCEL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={[styles.modalButton, { backgroundColor: Colors.primary }]}
+                onPress={handlePasswordSubmit}
+              >
+                <Text style={styles.modalButtonText}>ENTER</Text>
+              </TouchableOpacity>
             </View>
-          </KeyboardAvoidingView>
-        </Modal>
-      </View>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
+    </View>
   );
 }
 
@@ -266,11 +248,6 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.border,
     alignItems: 'center',
     justifyContent: 'space-evenly',
-  },
-  logo: {
-    width: 52,
-    height: 52,
-    marginHorizontal: 4,
   },
   statItem: {
     alignItems: 'center',
