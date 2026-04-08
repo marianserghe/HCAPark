@@ -12,6 +12,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { Colors } from '@/constants';
 import { Fonts } from '@/constants/styles';
 import { DUES_AMOUNT, DUES_WITH_FEE } from '@/constants';
@@ -80,10 +81,10 @@ function isValidExpiry(expiry: string): boolean {
 }
 
 // Manual payment instructions
-const MANUAL_INSTRUCTIONS: Record<Exclude<PaymentMethod, 'card'>, { title: string; icon: string; instructions: string[]; note: string }> = {
+const MANUAL_INSTRUCTIONS: Record<Exclude<PaymentMethod, 'card'>, { title: string; icon: keyof typeof Feather.glyphMap; instructions: string[]; note: string }> = {
   venmo: {
     title: 'VENMO',
-    icon: '📱',
+    icon: 'smartphone',
     instructions: [
       'Send $50.00 to:',
       '@HCAParkDues',
@@ -95,7 +96,7 @@ const MANUAL_INSTRUCTIONS: Record<Exclude<PaymentMethod, 'card'>, { title: strin
   },
   check: {
     title: 'CHECK',
-    icon: '📝',
+    icon: 'file-text',
     instructions: [
       'Make check payable to:',
       'HCA Park Association',
@@ -108,7 +109,7 @@ const MANUAL_INSTRUCTIONS: Record<Exclude<PaymentMethod, 'card'>, { title: strin
   },
   cash: {
     title: 'CASH',
-    icon: '💵',
+    icon: 'dollar-sign',
     instructions: [
       'Drop off cash payment at:',
       '123 Park Avenue',
@@ -269,7 +270,9 @@ export function PaymentModal({
                 style={styles.methodButton}
                 onPress={() => handleMethodSelect('card')}
               >
-                <Text style={styles.methodIcon}>💳</Text>
+                <View style={styles.methodIconWrap}>
+                  <Feather name="credit-card" size={24} color="#fff" />
+                </View>
                 <View style={styles.methodInfo}>
                   <Text style={styles.methodTitle}>CREDIT/DEBIT CARD</Text>
                   <Text style={styles.methodSubtext}>Instant • $1.80 fee applies</Text>
@@ -281,7 +284,9 @@ export function PaymentModal({
                 style={[styles.methodButton, styles.methodButtonAlt]}
                 onPress={() => handleMethodSelect('venmo')}
               >
-                <Text style={styles.methodIcon}>📱</Text>
+                <View style={[styles.methodIconWrap, styles.methodIconWrapAlt]}>
+                  <Feather name="smartphone" size={24} color={Colors.primary} />
+                </View>
                 <View style={styles.methodInfo}>
                   <Text style={[styles.methodTitle, styles.methodTitleAlt]}>VENMO</Text>
                   <Text style={[styles.methodSubtext, styles.methodSubtextAlt]}>$50.00 • No fee</Text>
@@ -293,7 +298,9 @@ export function PaymentModal({
                 style={[styles.methodButton, styles.methodButtonAlt]}
                 onPress={() => handleMethodSelect('check')}
               >
-                <Text style={styles.methodIcon}>📝</Text>
+                <View style={[styles.methodIconWrap, styles.methodIconWrapAlt]}>
+                  <Feather name="file-text" size={24} color={Colors.primary} />
+                </View>
                 <View style={styles.methodInfo}>
                   <Text style={[styles.methodTitle, styles.methodTitleAlt]}>CHECK</Text>
                   <Text style={[styles.methodSubtext, styles.methodSubtextAlt]}>$50.00 • No fee</Text>
@@ -305,7 +312,9 @@ export function PaymentModal({
                 style={[styles.methodButton, styles.methodButtonAlt]}
                 onPress={() => handleMethodSelect('cash')}
               >
-                <Text style={styles.methodIcon}>💵</Text>
+                <View style={[styles.methodIconWrap, styles.methodIconWrapAlt]}>
+                  <Feather name="dollar-sign" size={24} color={Colors.primary} />
+                </View>
                 <View style={styles.methodInfo}>
                   <Text style={[styles.methodTitle, styles.methodTitleAlt]}>CASH</Text>
                   <Text style={[styles.methodSubtext, styles.methodSubtextAlt]}>$50.00 • No fee</Text>
@@ -411,9 +420,13 @@ export function PaymentModal({
           {step === 'instructions' && selectedMethod && selectedMethod !== 'card' && (
             <ScrollView style={styles.content}>
               <View style={styles.instructionsCard}>
-                <Text style={styles.instructionsIcon}>
-                  {MANUAL_INSTRUCTIONS[selectedMethod as 'venmo' | 'check' | 'cash'].icon}
-                </Text>
+                <View style={styles.instructionsIconWrap}>
+                  <Feather 
+                    name={MANUAL_INSTRUCTIONS[selectedMethod as 'venmo' | 'check' | 'cash'].icon} 
+                    size={32} 
+                    color={Colors.primary} 
+                  />
+                </View>
                 <Text style={styles.instructionsTitle}>
                   {MANUAL_INSTRUCTIONS[selectedMethod as 'venmo' | 'check' | 'cash'].title}
                 </Text>
@@ -592,9 +605,17 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: Colors.border,
   },
-  methodIcon: {
-    fontSize: 28,
+  methodIconWrap: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginRight: 16,
+  },
+  methodIconWrapAlt: {
+    backgroundColor: 'rgba(50, 50, 123, 0.1)',
   },
   methodInfo: {
     flex: 1,
@@ -758,8 +779,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
   },
-  instructionsIcon: {
-    fontSize: 48,
+  instructionsIconWrap: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: 'rgba(50, 50, 123, 0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 12,
   },
   instructionsTitle: {
