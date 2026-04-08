@@ -49,7 +49,7 @@ export default function CalendarScreen() {
       <>
         <Stack.Screen 
           options={{
-            title: 'Calendar of Events',
+            title: 'Calendar',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
           }}
