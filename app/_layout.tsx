@@ -12,24 +12,23 @@ export default function RootLayout() {
             headerTitle: 'HCA Park',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
+            headerBackTitle: '',
           }} 
         />
         <Stack.Screen 
           name="admin" 
           options={{ 
-            headerTitle: 'ADMIN DASHBOARD',
+            headerBackTitleVisible: false,
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
-            headerBackTitle: '',
           }} 
         />
         <Stack.Screen 
           name="household/[id]" 
           options={{ 
-            headerTitle: 'HOUSEHOLD',
+            headerBackTitleVisible: false,
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
-            headerBackTitle: '',
           }} 
         />
       </Stack>
