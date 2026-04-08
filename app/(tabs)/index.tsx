@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   navButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: 'rgba(255, 255, 255, 0.90)',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   statsCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: 'rgba(255, 255, 255, 0.90)',
     borderRadius: 12,
     padding: 20,
   },
