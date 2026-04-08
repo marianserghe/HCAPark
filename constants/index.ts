@@ -1,0 +1,30 @@
+export const Colors = {
+  primary: '#4CAF50',      // Green - paid
+  secondary: '#2196F3',    // Blue
+  error: '#F44336',        // Red - unpaid
+  warning: '#FF9800',      // Orange
+  background: '#F5F5F5',
+  surface: '#FFFFFF',
+  text: '#212121',
+  textSecondary: '#757575',
+  border: '#E0E0E0',
+};
+
+export const DUES_AMOUNT = 50.00;
+export const STRIPE_FEE_PERCENT = 0.029;
+export const STRIPE_FEE_FIXED = 0.30;
+
+// Calculate total so neighborhood receives exactly DUES_AMOUNT
+export const calculateTotalWithFee = () => {
+  const total = Math.ceil((DUES_AMOUNT + STRIPE_FEE_FIXED) / (1 - STRIPE_FEE_PERCENT) * 100) / 100;
+  return total;
+};
+
+export const DUES_WITH_FEE = calculateTotalWithFee(); // ~$51.80
+
+export const PARK_LOCATION = {
+  latitude: 41.0026,  // Waldwick, NJ center (to be updated)
+  longitude: -74.1168,
+  latitudeDelta: 0.02,
+  longitudeDelta: 0.02,
+};
