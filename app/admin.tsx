@@ -64,6 +64,7 @@ export default function AdminScreen() {
         options={{
           headerTitle: 'ADMIN DASHBOARD',
           headerTitleAlign: 'center',
+          headerBackTitle: '',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: '#fff',
           headerTitleStyle: {
