@@ -70,7 +70,7 @@ export default function MembershipScreen() {
           headerTintColor: '#fff',
         }}
       />
-      <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top + 16 }}>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top }}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>JOIN OUR COMMUNITY</Text>
           <Text style={styles.headerSubtitle}>

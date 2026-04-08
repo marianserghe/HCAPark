@@ -124,7 +124,7 @@ export default function MapScreen() {
       />
       <View style={styles.container}>
       {/* Stats Banner */}
-      <View style={[styles.statsBanner, { paddingTop: insets.top + 8 }]}>
+      <View style={[styles.statsBanner, { paddingTop: insets.top }]}>
         <View style={styles.statItem}>
           <Text style={styles.statNumber}>{stats.percentagePaid}%</Text>
           <Text style={styles.statLabel}>PAID</Text>

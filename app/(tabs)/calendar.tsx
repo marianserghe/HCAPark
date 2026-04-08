@@ -71,7 +71,7 @@ export default function CalendarScreen() {
           headerTintColor: '#fff',
         }}
       />
-      <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top + 16 }}>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top }}>
         {events.length === 0 ? (
           <View style={styles.empty}>
             <Text style={styles.emptyIcon}>📅</Text>

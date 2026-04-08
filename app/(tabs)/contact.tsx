@@ -64,7 +64,7 @@ export default function ContactScreen() {
           headerTintColor: '#fff',
         }}
       />
-      <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top + 16 }}>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top }}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>GET IN TOUCH</Text>
           <Text style={styles.headerSubtitle}>
