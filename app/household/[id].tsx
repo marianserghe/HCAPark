@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -6,15 +6,18 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Alert,
+  ScrollView,
 } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { Colors, DUES_AMOUNT, DUES_WITH_FEE } from '@/constants';
+import { Fonts } from '@/constants/styles';
 import { supabase, Household } from '@/lib/supabase';
 
 export default function HouseholdScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [household, setHousehold] = useState<Household | null>(null);
   const [loading, setLoading] = useState(true);
+  const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -40,26 +43,50 @@ export default function HouseholdScreen() {
     }
   }
 
-  async function markAsPaid() {
+  async function handleMarkAsPaid() {
     if (!household) return;
     
-    try {
-      const { error } = await supabase
-        .from('households')
-        .update({
-          status: 'paid',
-          amount_paid: DUES_AMOUNT,
-          paid_at: new Date().toISOString(),
-        })
-        .eq('id', household.id);
-      
-      if (error) throw error;
-      
-      Alert.alert('Success', 'Payment recorded! Your home is now green on the map. 🎉');
-      router.back();
-    } catch (err: any) {
-      Alert.alert('Error', err.message);
-    }
+    Alert.alert(
+      'Mark as Paid',
+      `Mark ${household.first_name} ${household.last_name}'s dues as paid?\n\nThis is for cash/check/Venmo payments collected by the admin.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Mark Paid', 
+          onPress: async () => {
+            setProcessing(true);
+            try {
+              const { error } = await supabase
+                .from('households')
+                .update({
+                  status: 'paid',
+                  amount_paid: DUES_AMOUNT,
+                  paid_at: new Date().toISOString(),
+                })
+                .eq('id', household.id);
+              
+              if (error) throw error;
+              
+              Alert.alert('Success', 'Payment recorded successfully!', [
+                { text: 'OK', onPress: () => router.back() }
+              ]);
+            } catch (err: any) {
+              Alert.alert('Error', err.message);
+            } finally {
+              setProcessing(false);
+            }
+          }
+        }
+      ]
+    );
+  }
+
+  async function handleStripePayment() {
+    Alert.alert(
+      'Online Payment',
+      'Online payment integration coming soon!\n\nFor now, please contact your park administrator or use the "Mark as Paid" option if you\'ve paid via cash/check/Venmo.',
+      [{ text: 'OK' }]
+    );
   }
 
   if (loading) {
@@ -81,77 +108,122 @@ export default function HouseholdScreen() {
   const isPaid = household.status === 'paid';
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Status Header */}
       <View style={[
         styles.statusHeader,
-        { backgroundColor: isPaid ? Colors.primary : Colors.error }
+        { backgroundColor: isPaid ? '#4CAF50' : '#F44336' }
       ]}>
         <Text style={styles.statusEmoji}>{isPaid ? '✓' : '✗'}</Text>
         <Text style={styles.statusText}>
           {isPaid ? 'PAID' : 'UNPAID'}
         </Text>
+        {isPaid && household.paid_at && (
+          <Text style={styles.statusDate}>
+            {new Date(household.paid_at).toLocaleDateString()}
+          </Text>
+        )}
       </View>
 
-      {/* Address */}
-      <View style={styles.section}>
-        <Text style={styles.label}>Address</Text>
-        <Text style={styles.value}>{household.full_address}</Text>
-      </View>
-
-      {/* Resident */}
-      <View style={styles.section}>
-        <Text style={styles.label}>Resident</Text>
-        <Text style={styles.value}>
+      {/* Address Card */}
+      <View style={styles.card}>
+        <Text style={styles.cardLabel}>ADDRESS</Text>
+        <Text style={styles.cardValue}>{household.full_address}</Text>
+        <Text style={styles.cardSubtext}>
           {household.first_name} {household.last_name}
           {household.spouse && ` & ${household.spouse}`}
         </Text>
       </View>
 
-      {/* Dues Info */}
-      <View style={styles.section}>
-        <Text style={styles.label}>Annual Dues</Text>
-        <Text style={styles.value}>${DUES_AMOUNT.toFixed(2)}</Text>
+      {/* Dues Breakdown */}
+      <View style={styles.card}>
+        <Text style={styles.cardLabel}>ANNUAL DUES</Text>
+        
+        <View style={styles.breakdownRow}>
+          <Text style={styles.breakdownLabel}>Park Maintenance</Text>
+          <Text style={styles.breakdownValue}>${DUES_AMOUNT.toFixed(2)}</Text>
+        </View>
+        
+        {!isPaid && (
+          <>
+            <View style={styles.breakdownRow}>
+              <Text style={styles.breakdownLabel}>Processing Fee</Text>
+              <Text style={styles.breakdownValue}>${(DUES_WITH_FEE - DUES_AMOUNT).toFixed(2)}</Text>
+            </View>
+            <View style={styles.divider} />
+            <View style={styles.breakdownRow}>
+              <Text style={styles.totalLabel}>TOTAL</Text>
+              <Text style={styles.totalValue}>${DUES_WITH_FEE.toFixed(2)}</Text>
+            </View>
+          </>
+        )}
+
+        {isPaid && (
+          <View style={styles.paidContainer}>
+            <View style={styles.divider} />
+            <View style={styles.breakdownRow}>
+              <Text style={styles.totalLabel}>PAID</Text>
+              <Text style={[styles.totalValue, { color: '#4CAF50' }]}>${household.amount_paid.toFixed(2)}</Text>
+            </View>
+            {household.paid_at && (
+              <Text style={styles.paidDate}>
+                Paid on {new Date(household.paid_at).toLocaleDateString()}
+              </Text>
+            )}
+          </View>
+        )}
       </View>
 
-      {isPaid ? (
-        /* Already Paid */
-        <View style={styles.paidSection}>
-          <Text style={styles.paidTitle}>Thank you for your contribution! 🎉</Text>
-          <Text style={styles.paidText}>
-            Your dues were paid${household.paid_at ? ` on ${new Date(household.paid_at).toLocaleDateString()}` : ''}.
-          </Text>
-          <Text style={styles.paidText}>
-            Amount: ${household.amount_paid.toFixed(2)}
+      {/* Payment Buttons */}
+      {!isPaid ? (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity 
+            style={styles.primaryButton}
+            onPress={handleStripePayment}
+          >
+            <Text style={styles.primaryButtonText}>PAY NOW — ${DUES_WITH_FEE.toFixed(2)}</Text>
+          </TouchableOpacity>
+          
+          <Text style={styles.orText}>— OR —</Text>
+          
+          <TouchableOpacity 
+            style={styles.secondaryButton}
+            onPress={handleMarkAsPaid}
+            disabled={processing}
+          >
+            <Text style={styles.secondaryButtonText}>
+              {processing ? 'PROCESSING...' : 'ALREADY PAID? MARK AS PAID'}
+            </Text>
+          </TouchableOpacity>
+          
+          <Text style={styles.helpText}>
+            Paid via cash, check, or Venmo? Use "Mark as Paid" to update your status.
           </Text>
         </View>
       ) : (
-        /* Pay Button */
-        <View style={styles.paySection}>
-          <Text style={styles.amountLabel}>Amount Due</Text>
-          <Text style={styles.amountBreakdown}>
-            Dues: ${DUES_AMOUNT.toFixed(2)}
-          </Text>
-          <Text style={styles.amountBreakdown}>
-            Processing fee: ${(DUES_WITH_FEE - DUES_AMOUNT).toFixed(2)}
-          </Text>
-          <Text style={styles.amountTotal}>
-            Total: ${DUES_WITH_FEE.toFixed(2)}
-          </Text>
-
-          <TouchableOpacity 
-            style={styles.payButton}
-            onPress={markAsPaid}
-          >
-            <Text style={styles.payButtonText}>Pay Dues</Text>
-          </TouchableOpacity>
-
-          <Text style={styles.disclaimer}>
-            (Payment integration coming soon. For now, contact your park admin.)
-          </Text>
+        <View style={styles.buttonContainer}>
+          <View style={styles.receiptCard}>
+            <Text style={styles.receiptTitle}>🎉 THANK YOU!</Text>
+            <Text style={styles.receiptText}>
+              Your contribution helps keep our park beautiful for everyone.
+            </Text>
+            <Text style={styles.receiptSubtext}>
+              {household.first_name} {household.last_name}{'\n'}
+              {household.full_address}
+            </Text>
+          </View>
         </View>
       )}
-    </View>
+
+      {/* Contact Info */}
+      {household.phone && (
+        <View style={styles.card}>
+          <Text style={styles.cardLabel}>CONTACT</Text>
+          <Text style={styles.cardSubtext}>Phone: {household.phone}</Text>
+          {household.email && <Text style={styles.cardSubtext}>Email: {household.email}</Text>}
+        </View>
+      )}
+    </ScrollView>
   );
 }
 
@@ -160,97 +232,171 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
+  content: {
+    padding: 16,
+    paddingBottom: 40,
+  },
   centered: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   statusHeader: {
-    padding: 20,
+    padding: 24,
     alignItems: 'center',
+    borderRadius: 12,
+    marginBottom: 16,
   },
   statusEmoji: {
     fontSize: 48,
     marginBottom: 8,
   },
   statusText: {
+    fontFamily: Fonts.regular,
+    fontSize: 32,
+    letterSpacing: 2,
     color: '#fff',
-    fontSize: 24,
-    fontWeight: 'bold',
   },
-  section: {
-    backgroundColor: Colors.surface,
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  label: {
-    fontSize: 12,
-    color: Colors.textSecondary,
-    marginBottom: 4,
-    textTransform: 'uppercase',
-  },
-  value: {
-    fontSize: 18,
-    fontWeight: '500',
-    color: Colors.text,
-  },
-  paidSection: {
-    backgroundColor: '#E8F5E9',
-    margin: 16,
-    padding: 20,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  paidTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: Colors.primary,
-    marginBottom: 8,
-  },
-  paidText: {
-    fontSize: 14,
-    color: Colors.text,
-    marginBottom: 4,
-  },
-  paySection: {
-    backgroundColor: Colors.surface,
-    margin: 16,
-    padding: 20,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  amountLabel: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    marginBottom: 8,
-  },
-  amountBreakdown: {
+  statusDate: {
+    fontFamily: Fonts.regular,
     fontSize: 16,
+    color: 'rgba(255,255,255,0.8)',
+    marginTop: 8,
+  },
+  card: {
+    backgroundColor: Colors.surface,
+    borderRadius: 12,
+    padding: 20,
+    marginBottom: 16,
+  },
+  cardLabel: {
+    fontFamily: Fonts.regular,
+    fontSize: 14,
+    color: Colors.textSecondary,
+    letterSpacing: 1,
+    marginBottom: 8,
+  },
+  cardValue: {
+    fontFamily: Fonts.regular,
+    fontSize: 24,
+    color: Colors.text,
+    letterSpacing: 1,
+  },
+  cardSubtext: {
+    fontFamily: Fonts.regular,
+    fontSize: 16,
+    color: Colors.textSecondary,
+    marginTop: 4,
+  },
+  breakdownRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  breakdownLabel: {
+    fontFamily: Fonts.regular,
+    fontSize: 18,
     color: Colors.text,
   },
-  amountTotal: {
-    fontSize: 24,
-    fontWeight: 'bold',
+  breakdownValue: {
+    fontFamily: Fonts.regular,
+    fontSize: 18,
     color: Colors.text,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: Colors.border,
+    marginVertical: 8,
+  },
+  totalLabel: {
+    fontFamily: Fonts.regular,
+    fontSize: 22,
+    color: Colors.text,
+    letterSpacing: 1,
+  },
+  totalValue: {
+    fontFamily: Fonts.regular,
+    fontSize: 26,
+    color: Colors.primary,
+    letterSpacing: 1,
+  },
+  paidContainer: {
+    marginTop: 8,
+  },
+  paidDate: {
+    fontFamily: Fonts.regular,
+    fontSize: 14,
+    color: Colors.textSecondary,
+    textAlign: 'center',
+    marginTop: 8,
+  },
+  buttonContainer: {
+    marginTop: 8,
+  },
+  primaryButton: {
+    backgroundColor: Colors.primary,
+    borderRadius: 12,
+    padding: 18,
+    alignItems: 'center',
+  },
+  primaryButtonText: {
+    fontFamily: Fonts.regular,
+    fontSize: 20,
+    color: '#fff',
+    letterSpacing: 1,
+  },
+  orText: {
+    fontFamily: Fonts.regular,
+    fontSize: 16,
+    color: Colors.textSecondary,
+    textAlign: 'center',
     marginVertical: 16,
   },
-  payButton: {
-    backgroundColor: Colors.primary,
-    paddingHorizontal: 40,
-    paddingVertical: 14,
-    borderRadius: 8,
-    width: '100%',
+  secondaryButton: {
+    backgroundColor: Colors.surface,
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: Colors.primary,
+  },
+  secondaryButtonText: {
+    fontFamily: Fonts.regular,
+    fontSize: 18,
+    color: Colors.primary,
+    letterSpacing: 1,
+  },
+  helpText: {
+    fontFamily: Fonts.regular,
+    fontSize: 14,
+    color: Colors.textSecondary,
+    textAlign: 'center',
+    marginTop: 12,
+    paddingHorizontal: 20,
+  },
+  receiptCard: {
+    backgroundColor: '#E8F5E9',
+    borderRadius: 12,
+    padding: 24,
     alignItems: 'center',
   },
-  payButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
+  receiptTitle: {
+    fontFamily: Fonts.regular,
+    fontSize: 28,
+    color: '#4CAF50',
+    marginBottom: 12,
   },
-  disclaimer: {
-    marginTop: 16,
-    fontSize: 12,
+  receiptText: {
+    fontFamily: Fonts.regular,
+    fontSize: 18,
+    color: Colors.text,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  receiptSubtext: {
+    fontFamily: Fonts.regular,
+    fontSize: 14,
     color: Colors.textSecondary,
     textAlign: 'center',
   },
