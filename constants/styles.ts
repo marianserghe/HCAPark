@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { Colors } from './index';
 
+// Use system font as fallback - Bebas may not load on all devices
 export const Fonts = {
   regular: 'BebasNeue',
-  bold: 'BebasNeue',
+  fallback: 'System',
 };
 
 export const Typography = {
