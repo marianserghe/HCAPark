@@ -12,12 +12,14 @@ import { useLocalSearchParams, router } from 'expo-router';
 import { Colors, DUES_AMOUNT, DUES_WITH_FEE } from '@/constants';
 import { Fonts } from '@/constants/styles';
 import { supabase, Household } from '@/lib/supabase';
+import { PaymentModal } from '@/components/PaymentModal';
 
 export default function HouseholdScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [household, setHousehold] = useState<Household | null>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -82,11 +84,29 @@ export default function HouseholdScreen() {
   }
 
   async function handleStripePayment() {
-    Alert.alert(
-      'Online Payment',
-      'Online payment integration coming soon!\n\nFor now, please contact your park administrator or use the "Mark as Paid" option if you\'ve paid via cash/check/Venmo.',
-      [{ text: 'OK' }]
-    );
+    setShowPaymentModal(true);
+  }
+
+  async function handlePaymentComplete(method: 'card' | 'venmo' | 'check' | 'cash') {
+    if (!household) return;
+    
+    try {
+      const { error } = await supabase
+        .from('households')
+        .update({
+          status: 'paid',
+          amount_paid: method === 'card' ? DUES_WITH_FEE : DUES_AMOUNT,
+          paid_at: new Date().toISOString(),
+        })
+        .eq('id', household.id);
+      
+      if (error) throw error;
+      
+      // Refresh household data
+      await loadHousehold(household.id);
+    } catch (err: any) {
+      Alert.alert('Error', err.message);
+    }
   }
 
   if (loading) {
@@ -108,7 +128,8 @@ export default function HouseholdScreen() {
   const isPaid = household.status === 'paid';
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <>
+      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Status Header */}
       <View style={[
         styles.statusHeader,
@@ -224,6 +245,15 @@ export default function HouseholdScreen() {
         </View>
       )}
     </ScrollView>
+
+    <PaymentModal
+      visible={showPaymentModal}
+      onClose={() => setShowPaymentModal(false)}
+      householdName={`${household?.first_name} ${household?.last_name}`}
+      householdAddress={household?.full_address || ''}
+      onPaymentComplete={handlePaymentComplete}
+    />
+  </>
   );
 }
 
