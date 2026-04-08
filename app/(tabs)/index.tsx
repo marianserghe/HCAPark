@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
   },
   statNumber: {
     fontFamily: Fonts.headline,
-    fontSize: 32,
+    fontSize: 42,
     color: Colors.text,
     letterSpacing: 1,
   },
