@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal, Image } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal } from 'react-native';
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
@@ -63,13 +63,7 @@ export default function MapScreen() {
     <>
       <Stack.Screen 
         options={{
-          headerTitle: () => (
-            <Image 
-              source={require('@/assets/icon.png')} 
-              style={styles.headerLogo}
-              resizeMode="contain"
-            />
-          ),
+          headerTitle: 'HCA PARK',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: '#fff',
         }}
@@ -187,11 +181,6 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  headerLogo: {
-    width: 120,
-    height: 40,
-    tintColor: '#fff',
   },
   centered: {
     flex: 1,
