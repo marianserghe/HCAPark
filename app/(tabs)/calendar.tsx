@@ -54,7 +54,7 @@ export default function CalendarScreen() {
             headerTintColor: '#fff',
           }}
         />
-        <View style={[styles.centered, { paddingTop: insets.top }]}>
+        <View style={styles.centered}>
           <ActivityIndicator size="large" color={Colors.primary} />
         </View>
       </>
