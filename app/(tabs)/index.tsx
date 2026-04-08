@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(30, 136, 229, 0.85)',
+    backgroundColor: 'rgba(50, 50, 123, 0.425)',
   },
   menuButton: {
     position: 'absolute',
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 24,
-    paddingTop: 80,
+    paddingTop: 16,
     paddingBottom: 40,
   },
   logo: {

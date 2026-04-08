@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { Stack, useRouter } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
@@ -21,7 +21,6 @@ export default function CalendarScreen() {
   const [events, setEvents] = React.useState<Event[]>([]);
   const [loading, setLoading] = React.useState(true);
   const router = useRouter();
-  const insets = useSafeAreaInsets();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -71,7 +70,7 @@ export default function CalendarScreen() {
           headerTintColor: '#fff',
         }}
       />
-      <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top }}>
+      <ScrollView style={styles.container}>
         {events.length === 0 ? (
           <View style={styles.empty}>
             <Text style={styles.emptyIcon}>📅</Text>
@@ -126,7 +125,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-    paddingTop: 16,
   },
   centered: {
     flex: 1,

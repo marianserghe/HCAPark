@@ -1,7 +1,7 @@
 export const Colors = {
-  primary: '#1E88E5',      // Blue from logo
-  primaryDark: '#1565C0',  // Darker blue
-  secondary: '#42A5F5',    // Lighter blue
+  primary: '#32327b',      // Deep purple-blue
+  primaryDark: '#252560',  // Darker purple-blue
+  secondary: '#4A4A9E',    // Lighter purple-blue
   error: '#F44336',        // Red - unpaid
   warning: '#FF9800',      // Orange
   background: '#F5F5F5',

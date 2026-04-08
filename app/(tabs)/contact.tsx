@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
   Linking,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { Stack } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 import { Colors } from '@/constants';
@@ -22,7 +22,6 @@ export default function ContactScreen() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const insets = useSafeAreaInsets();
 
   async function handleSubmit() {
     if (!name.trim() || !email.trim() || !message.trim()) {
@@ -64,7 +63,7 @@ export default function ContactScreen() {
           headerTintColor: '#fff',
         }}
       />
-      <ScrollView style={styles.container} contentContainerStyle={{ paddingTop: insets.top }}>
+      <ScrollView style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerTitle}>GET IN TOUCH</Text>
           <Text style={styles.headerSubtitle}>
@@ -173,7 +172,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-    paddingTop: 16,
   },
   header: {
     padding: 24,
