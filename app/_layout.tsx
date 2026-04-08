@@ -12,7 +12,6 @@ export default function RootLayout() {
             headerTitle: 'HCA Park',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
-            headerBackTitle: '',
           }} 
         />
         <Stack.Screen 
