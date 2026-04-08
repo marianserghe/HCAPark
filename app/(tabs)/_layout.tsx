@@ -58,6 +58,7 @@ export default function TabsLayout() {
         options={{
           title: 'Join our Community',
           headerTitleStyle: { fontFamily: Fonts.headline, fontSize: 24 },
+          tabBarLabel: 'Join HCA',
           tabBarIcon: ({ color, size }) => (
             <Feather name="award" size={size} color={color} />
           ),
@@ -68,6 +69,7 @@ export default function TabsLayout() {
         options={{
           title: 'Get in Touch',
           headerTitleStyle: { fontFamily: Fonts.headline, fontSize: 24 },
+          tabBarLabel: 'Contact',
           tabBarIcon: ({ color, size }) => (
             <Feather name="mail" size={size} color={color} />
           ),
