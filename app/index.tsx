@@ -14,6 +14,7 @@ export default function MapScreen() {
   const { households, loading, error, refresh, stats } = useHouseholds();
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [password, setPassword] = useState('');
+  const [mapType, setMapType] = useState<'standard' | 'satellite'>('standard');
   const router = useRouter();
 
   // Refresh data when screen comes into focus
@@ -37,6 +38,10 @@ export default function MapScreen() {
       Alert.alert('Incorrect Password', 'Please try again.');
       setPassword('');
     }
+  }
+
+  function toggleMapType() {
+    setMapType(prev => prev === 'standard' ? 'satellite' : 'standard');
   }
 
   if (loading) {
@@ -94,6 +99,7 @@ export default function MapScreen() {
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         initialRegion={PARK_LOCATION}
+        mapType={mapType}
       >
         {households.filter(h => h.latitude && h.longitude).map((household) => (
           <Marker
@@ -131,6 +137,13 @@ export default function MapScreen() {
           </Marker>
         ))}
       </MapView>
+
+      {/* Map Type Toggle */}
+      <TouchableOpacity style={styles.mapTypeButton} onPress={toggleMapType}>
+        <Text style={styles.mapTypeText}>
+          {mapType === 'standard' ? '🛰️' : '🗺️'}
+        </Text>
+      </TouchableOpacity>
 
       {/* Admin Link */}
       <TouchableOpacity style={styles.adminButton} onPress={handleAdminPress}>
@@ -299,6 +312,25 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.regular,
     fontSize: 21,
     letterSpacing: 1,
+  },
+  mapTypeButton: {
+    position: 'absolute',
+    bottom: 24,
+    left: 20,
+    backgroundColor: Colors.surface,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  mapTypeText: {
+    fontSize: 24,
   },
   modalOverlay: {
     flex: 1,
