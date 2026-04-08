@@ -12,11 +12,6 @@ export default function RootLayout() {
             headerTitle: 'HCA PARK DUES',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontFamily: 'BebasNeue',
-              fontSize: 22,
-              letterSpacing: 2,
-            },
           }} 
         />
         <Stack.Screen 
@@ -25,11 +20,6 @@ export default function RootLayout() {
             headerTitle: 'ADMIN DASHBOARD',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontFamily: 'BebasNeue',
-              fontSize: 22,
-              letterSpacing: 2,
-            },
           }} 
         />
         <Stack.Screen 
@@ -38,11 +28,6 @@ export default function RootLayout() {
             headerTitle: 'HOUSEHOLD',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontFamily: 'BebasNeue',
-              fontSize: 22,
-              letterSpacing: 2,
-            },
           }} 
         />
       </Stack>

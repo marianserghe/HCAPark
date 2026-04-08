@@ -67,11 +67,6 @@ export default function AdminScreen() {
           headerBackTitle: '',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontFamily: 'BebasNeue',
-            fontSize: 24,
-            letterSpacing: 2,
-          },
         }}
       />
       <View style={styles.container}>

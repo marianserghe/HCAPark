@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal, Image } from 'react-native';
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { Colors, PARK_LOCATION } from '@/constants';
@@ -124,13 +124,14 @@ export default function MapScreen() {
                 ]}>
                   {household.status === 'paid' ? '✓ PAID' : '✗ UNPAID'}
                 </Text>
-                <Link href={`/household/${household.id}`} asChild>
-                  <TouchableOpacity style={styles.calloutButton}>
-                    <Text style={styles.calloutButtonText}>
-                      {household.status === 'paid' ? 'VIEW DETAILS' : 'PAY DUES'}
-                    </Text>
-                  </TouchableOpacity>
-                </Link>
+                <TouchableOpacity 
+                  style={styles.calloutButton}
+                  onPress={() => router.push(`/household/${household.id}`)}
+                >
+                  <Text style={styles.calloutButtonText}>
+                    {household.status === 'paid' ? 'VIEW DETAILS' : 'PAY DUES'}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </Callout>
           </Marker>

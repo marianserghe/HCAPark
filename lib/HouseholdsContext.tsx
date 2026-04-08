@@ -11,7 +11,7 @@ type HouseholdsContextType = {
     total: number;
     paidCount: number;
     unpaidCount: number;
-    percentagePaid: number;
+    percentagePaid: string;
     totalCollected: number;
     expectedTotal: number;
   };
