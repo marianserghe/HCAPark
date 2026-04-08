@@ -23,8 +23,8 @@ export const calculateTotalWithFee = () => {
 export const DUES_WITH_FEE = calculateTotalWithFee(); // ~$51.80
 
 export const PARK_LOCATION = {
-  latitude: 41.0026,  // Waldwick, NJ center (to be updated)
-  longitude: -74.1168,
-  latitudeDelta: 0.02,
-  longitudeDelta: 0.02,
+  latitude: 41.0105,   // Waldwick, NJ center
+  longitude: -74.1035,
+  latitudeDelta: 0.015,
+  longitudeDelta: 0.015,
 };
