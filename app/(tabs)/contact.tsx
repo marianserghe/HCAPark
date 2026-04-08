@@ -11,6 +11,7 @@ import {
   Linking,
 } from 'react-native';
 import { Stack } from 'expo-router';
+import { Feather } from '@expo/vector-icons';
 import { Colors } from '@/constants';
 import { Fonts } from '@/constants/styles';
 import { supabase } from '@/lib/supabase';
@@ -132,7 +133,7 @@ export default function ContactScreen() {
               style={styles.socialButton}
               onPress={() => Linking.openURL('https://facebook.com/hcapark')}
             >
-              <Text style={styles.socialIcon}>📘</Text>
+              <Feather name="facebook" size={20} color={Colors.text} />
               <Text style={styles.socialText}>Facebook</Text>
             </TouchableOpacity>
 
@@ -140,7 +141,7 @@ export default function ContactScreen() {
               style={styles.socialButton}
               onPress={() => Linking.openURL('https://instagram.com/hcapark')}
             >
-              <Text style={styles.socialIcon}>📸</Text>
+              <Feather name="instagram" size={20} color={Colors.text} />
               <Text style={styles.socialText}>Instagram</Text>
             </TouchableOpacity>
           </View>
@@ -152,11 +153,11 @@ export default function ContactScreen() {
           
           <View style={styles.infoCard}>
             <View style={styles.infoRow}>
-              <Text style={styles.infoIcon}>📧</Text>
+              <Feather name="mail" size={20} color={Colors.primary} />
               <Text style={styles.infoText}>contact@hcapark.org</Text>
             </View>
             <View style={styles.infoRow}>
-              <Text style={styles.infoIcon}>📍</Text>
+              <Feather name="map-pin" size={20} color={Colors.primary} />
               <Text style={styles.infoText}>Waldwick, NJ 07463</Text>
             </View>
           </View>
@@ -253,14 +254,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.border,
   },
-  socialIcon: {
-    fontSize: 24,
-    marginRight: 12,
-  },
   socialText: {
     fontFamily: Fonts.body,
     fontSize: 16,
     color: Colors.text,
+    marginLeft: 10,
   },
   infoCard: {
     backgroundColor: Colors.surface,
@@ -274,13 +272,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 12,
   },
-  infoIcon: {
-    fontSize: 20,
-    marginRight: 12,
-  },
   infoText: {
     fontFamily: Fonts.body,
     fontSize: 16,
     color: Colors.text,
+    marginLeft: 12,
   },
 });

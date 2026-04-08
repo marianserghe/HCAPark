@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
+import { Feather } from '@expo/vector-icons';
 import { useRouter, Stack } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
 import { Colors, PARK_LOCATION } from '@/constants';
@@ -172,9 +173,11 @@ export default function MapScreen() {
 
       {/* Map Type Toggle */}
       <TouchableOpacity style={styles.mapTypeButton} onPress={toggleMapType}>
-        <Text style={styles.mapTypeText}>
-          {mapType === 'standard' ? '🛰️' : '🗺️'}
-        </Text>
+        <Feather 
+          name={mapType === 'standard' ? 'globe' : 'map'} 
+          size={22} 
+          color={Colors.primary} 
+        />
       </TouchableOpacity>
 
       {/* Admin Link */}

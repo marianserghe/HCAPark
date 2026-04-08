@@ -6,8 +6,8 @@ import {
   ScrollView, 
   TouchableOpacity,
 } from 'react-native';
-import { Stack } from 'expo-router';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
+import { Feather } from '@expo/vector-icons';
 import { Colors } from '@/constants';
 import { Fonts } from '@/constants/styles';
 
@@ -100,7 +100,7 @@ export default function MembershipScreen() {
               <View style={styles.features}>
                 {tier.features.map((feature, index) => (
                   <View key={index} style={styles.featureRow}>
-                    <Text style={styles.featureCheck}>✓</Text>
+                    <Feather name="check" size={16} color={Colors.primary} />
                     <Text style={styles.featureText}>{feature}</Text>
                   </View>
                 ))}
@@ -226,19 +226,13 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     marginBottom: 8,
   },
-  featureCheck: {
-    fontFamily: Fonts.body,
-    fontSize: 14,
-    color: Colors.primary,
-    marginRight: 8,
-    marginTop: 2,
-  },
   featureText: {
     fontFamily: Fonts.body,
     fontSize: 14,
     color: Colors.text,
     flex: 1,
     lineHeight: 20,
+    marginLeft: 8,
   },
   selectButton: {
     backgroundColor: Colors.primary,

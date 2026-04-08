@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
+import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { Colors } from '@/constants';
 import { Fonts } from '@/constants/styles';
@@ -102,14 +103,20 @@ export default function CalendarScreen() {
               </View>
               <View style={styles.eventContent}>
                 <Text style={styles.eventTitle}>{event.title}</Text>
-                <Text style={styles.eventTime}>
-                  🕐 {event.time} • 📍 {event.location}
-                </Text>
+                <View style={styles.eventMeta}>
+                  <Feather name="clock" size={14} color={Colors.textSecondary} />
+                  <Text style={styles.eventTime}>{event.time}</Text>
+                  <Feather name="map-pin" size={14} color={Colors.textSecondary} style={{ marginLeft: 12 }} />
+                  <Text style={styles.eventTime}>{event.location}</Text>
+                </View>
                 <Text style={styles.eventDescription} numberOfLines={2}>{event.description}</Text>
                 <View style={styles.eventFooter}>
-                  <Text style={styles.rsvpCount}>
-                    {event.rsvp_count || 0} attending
-                  </Text>
+                  <View style={styles.rsvpRow}>
+                    <Feather name="users" size={14} color={Colors.primary} />
+                    <Text style={styles.rsvpCount}>
+                      {event.rsvp_count || 0} attending
+                    </Text>
+                  </View>
                   <Text style={styles.tapToRsvp}>Tap to RSVP →</Text>
                 </View>
               </View>
@@ -196,11 +203,16 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginBottom: 4,
   },
+  eventMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
   eventTime: {
     fontFamily: Fonts.body,
     fontSize: 14,
     color: Colors.textSecondary,
-    marginBottom: 8,
+    marginLeft: 4,
   },
   eventDescription: {
     fontFamily: Fonts.body,
@@ -214,10 +226,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  rsvpRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   rsvpCount: {
     fontFamily: Fonts.body,
     fontSize: 12,
     color: Colors.primary,
+    marginLeft: 4,
   },
   tapToRsvp: {
     fontFamily: Fonts.body,
