@@ -1,21 +1,40 @@
 import { Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
-import { Image, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Image, StyleSheet, View, ActivityIndicator, Text } from 'react-native';
 import { HouseholdsProvider } from '@/lib/HouseholdsContext';
 import { Colors } from '@/constants';
 
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     BebasNeue: require('../assets/fonts/BebasNeue-Regular.ttf'),
     RobotoCondensed: require('../assets/fonts/RobotoCondensed-Regular.ttf'),
   });
+  
+  const [timeout, setTimedOut] = useState(false);
+  
+  // Fallback timeout in case fonts never load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!fontsLoaded) {
+        console.log('Font loading timeout, proceeding anyway');
+        setTimedOut(true);
+      }
+    }, 5000);
+    
+    return () => clearTimeout(timer);
+  }, [fontsLoaded]);
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded && !timeout) {
     return (
       <View style={styles.loading}>
         <ActivityIndicator size="large" color={Colors.primary} />
       </View>
     );
+  }  
+  
+  if (fontError) {
+    console.log('Font error:', fontError);
   }
 
   return (
