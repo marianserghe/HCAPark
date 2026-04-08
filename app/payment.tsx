@@ -248,6 +248,7 @@ export default function PaymentScreen() {
         >
           <View style={styles.modalContainer}>
             <View style={styles.modalHeader}>
+              <View style={{ width: 32 }} />
               <Text style={styles.modalTitle}>CARD PAYMENT</Text>
               <TouchableOpacity onPress={() => setShowCardForm(false)}>
                 <Text style={styles.closeText}>✕</Text>
@@ -338,6 +339,7 @@ export default function PaymentScreen() {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
             <View style={styles.modalHeader}>
+              <View style={{ width: 32 }} />
               <Text style={styles.modalTitle}>
                 {selectedMethod && MANUAL_INSTRUCTIONS[selectedMethod as 'venmo' | 'check' | 'cash']?.title}
               </Text>
@@ -545,7 +547,7 @@ const styles = StyleSheet.create({
   modalHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
@@ -555,12 +557,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: Colors.primary,
     letterSpacing: 2,
+    flex: 1,
+    textAlign: 'center',
   },
   closeText: {
-    position: 'absolute',
-    right: 16,
     fontSize: 24,
     color: Colors.textSecondary,
+    width: 32,
+    textAlign: 'center',
   },
   modalContent: {
     padding: 20,
