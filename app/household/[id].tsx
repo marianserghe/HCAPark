@@ -117,10 +117,6 @@ export default function HouseholdScreen() {
       <View style={styles.card}>
         <Text style={styles.cardLabel}>ADDRESS</Text>
         <Text style={styles.cardValue}>{household.full_address}</Text>
-        <Text style={styles.cardSubtext}>
-          {household.first_name} {household.last_name}
-          {household.spouse && ` & ${household.spouse}`}
-        </Text>
       </View>
 
       {/* Dues Breakdown */}
@@ -184,7 +180,6 @@ export default function HouseholdScreen() {
               Your contribution helps keep our park beautiful for everyone.
             </Text>
             <Text style={styles.receiptSubtext}>
-              {household.first_name} {household.last_name}{'\n'}
               {household.full_address}
             </Text>
           </View>
@@ -204,7 +199,7 @@ export default function HouseholdScreen() {
     <PaymentModal
       visible={showPaymentModal}
       onClose={() => setShowPaymentModal(false)}
-      householdName={`${household?.first_name} ${household?.last_name}`}
+      householdName={household?.full_address || ''}
       householdAddress={household?.full_address || ''}
       onPaymentComplete={handlePaymentComplete}
     />
