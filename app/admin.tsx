@@ -7,7 +7,6 @@ import {
   TouchableOpacity, 
   ActivityIndicator,
   TextInput,
-  Alert,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Stack } from 'expo-router';
@@ -17,7 +16,7 @@ import { useHouseholds } from '@/lib/HouseholdsContext';
 import { Household } from '@/lib/supabase';
 
 export default function AdminScreen() {
-  const { households, loading, error, refresh, togglePaid, stats } = useHouseholds();
+  const { households, loading, refresh, togglePaid, stats } = useHouseholds();
   const [searchQuery, setSearchQuery] = React.useState('');
   const [filter, setFilter] = React.useState<'all' | 'paid' | 'unpaid'>('all');
 
@@ -46,7 +45,7 @@ export default function AdminScreen() {
     try {
       await togglePaid(household);
     } catch (err: any) {
-      Alert.alert('Error', err.message);
+      // Error handled by context
     }
   }
 
@@ -62,7 +61,11 @@ export default function AdminScreen() {
     <>
       <Stack.Screen 
         options={{
-          headerTitle: 'ADMIN DASHBOARD',
+          headerTitle: () => (
+            <Text style={{ fontFamily: 'BebasNeue', fontSize: 24, color: '#fff', letterSpacing: 2 }}>
+              ADMIN DASHBOARD
+            </Text>
+          ),
           headerTitleAlign: 'center',
           headerBackTitle: '',
           headerStyle: { backgroundColor: Colors.primary },
@@ -70,88 +73,88 @@ export default function AdminScreen() {
         }}
       />
       <View style={styles.container}>
-      {/* Summary Stats */}
-      <View style={styles.summary}>
-        <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>COLLECTED:</Text>
-          <Text style={styles.summaryValue}>${stats.totalCollected.toLocaleString()}</Text>
+        {/* Summary Stats */}
+        <View style={styles.summary}>
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>COLLECTED:</Text>
+            <Text style={styles.summaryValue}>${stats.totalCollected.toLocaleString()}</Text>
+          </View>
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>EXPECTED:</Text>
+            <Text style={styles.summaryValue}>${stats.expectedTotal.toLocaleString()}</Text>
+          </View>
+          <View style={styles.summaryRow}>
+            <Text style={[styles.summaryLabel, { color: Colors.error }]}>OUTSTANDING:</Text>
+            <Text style={[styles.summaryValue, { color: Colors.error }]}>
+              ${(stats.expectedTotal - stats.totalCollected).toLocaleString()}
+            </Text>
+          </View>
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>PAID:</Text>
+            <Text style={styles.summaryValue}>{stats.paidCount}/{stats.total} HOUSEHOLDS</Text>
+          </View>
         </View>
-        <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>EXPECTED:</Text>
-          <Text style={styles.summaryValue}>${stats.expectedTotal.toLocaleString()}</Text>
-        </View>
-        <View style={styles.summaryRow}>
-          <Text style={[styles.summaryLabel, { color: Colors.error }]}>OUTSTANDING:</Text>
-          <Text style={[styles.summaryValue, { color: Colors.error }]}>
-            ${(stats.expectedTotal - stats.totalCollected).toLocaleString()}
-          </Text>
-        </View>
-        <View style={styles.summaryRow}>
-          <Text style={styles.summaryLabel}>PAID:</Text>
-          <Text style={styles.summaryValue}>{stats.paidCount}/{stats.total} HOUSEHOLDS</Text>
-        </View>
-      </View>
 
-      {/* Search & Filter */}
-      <View style={styles.searchContainer}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search by street or name..."
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholderTextColor={Colors.textSecondary}
-        />
-        <View style={styles.filterButtons}>
-          {(['all', 'paid', 'unpaid'] as const).map(f => (
-            <TouchableOpacity
-              key={f}
-              style={[
-                styles.filterButton,
-                filter === f && styles.filterButtonActive
-              ]}
-              onPress={() => setFilter(f)}
+        {/* Search & Filter */}
+        <View style={styles.searchContainer}>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search by street or name..."
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholderTextColor={Colors.textSecondary}
+          />
+          <View style={styles.filterButtons}>
+            {(['all', 'paid', 'unpaid'] as const).map(f => (
+              <TouchableOpacity
+                key={f}
+                style={[
+                  styles.filterButton,
+                  filter === f && styles.filterButtonActive
+                ]}
+                onPress={() => setFilter(f)}
+              >
+                <Text style={[
+                  styles.filterText,
+                  filter === f && styles.filterTextActive
+                ]}>
+                  {f.toUpperCase()}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
+        {/* Household List */}
+        <FlatList
+          data={filteredHouseholds}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity 
+              style={styles.householdRow}
+              onPress={() => handleTogglePaid(item)}
             >
-              <Text style={[
-                styles.filterText,
-                filter === f && styles.filterTextActive
+              <View style={styles.householdInfo}>
+                <Text style={styles.address}>
+                  {item.house_number} {item.street}
+                </Text>
+                <Text style={styles.name}>
+                  {item.last_name}, {item.first_name}
+                </Text>
+              </View>
+              <View style={[
+                styles.statusBadge,
+                { backgroundColor: item.status === 'paid' ? Colors.primary : Colors.error }
               ]}>
-                {f.toUpperCase()}
-              </Text>
+                <Text style={styles.statusText}>
+                  {item.status === 'paid' ? '✓' : '✗'}
+                </Text>
+              </View>
             </TouchableOpacity>
-          ))}
-        </View>
+          )}
+          contentContainerStyle={styles.list}
+        />
       </View>
-
-      {/* Household List */}
-      <FlatList
-        data={filteredHouseholds}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity 
-            style={styles.householdRow}
-            onPress={() => handleTogglePaid(item)}
-          >
-            <View style={styles.householdInfo}>
-              <Text style={styles.address}>
-                {item.house_number} {item.street}
-              </Text>
-              <Text style={styles.name}>
-                {item.last_name}, {item.first_name}
-              </Text>
-            </View>
-            <View style={[
-              styles.statusBadge,
-              { backgroundColor: item.status === 'paid' ? Colors.primary : Colors.error }
-            ]}>
-              <Text style={styles.statusText}>
-                {item.status === 'paid' ? '✓' : '✗'}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        )}
-        contentContainerStyle={styles.list}
-      />
-    </View>
     </>
   );
 }
