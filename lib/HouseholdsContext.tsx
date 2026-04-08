@@ -80,8 +80,8 @@ export function HouseholdsProvider({ children }: { children: React.ReactNode }) 
     paidCount: households.filter(h => h.status === 'paid').length,
     unpaidCount: households.filter(h => h.status === 'unpaid').length,
     percentagePaid: households.length > 0 
-      ? Math.round((households.filter(h => h.status === 'paid').length / households.length) * 100) 
-      : 0,
+      ? ((households.filter(h => h.status === 'paid').length / households.length) * 100).toFixed(2)
+      : '0.00',
     totalCollected: households.reduce((sum, h) => sum + (h.amount_paid || 0), 0),
     expectedTotal: households.length * 50,
   };

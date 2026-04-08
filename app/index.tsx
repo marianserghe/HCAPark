@@ -154,17 +154,17 @@ const styles = StyleSheet.create({
   statsBanner: {
     flexDirection: 'row',
     backgroundColor: Colors.surface,
-    paddingVertical: 14,
-    paddingHorizontal: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
     alignItems: 'center',
     justifyContent: 'space-evenly',
   },
   logo: {
-    width: 40,
-    height: 40,
-    marginRight: 8,
+    width: 52,
+    height: 52,
+    marginHorizontal: 4,
   },
   statItem: {
     alignItems: 'center',
