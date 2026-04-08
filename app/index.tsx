@@ -219,7 +219,6 @@ export default function MapScreen() {
           </KeyboardAvoidingView>
         </Modal>
       </View>
-    </>
   );
 }
 
