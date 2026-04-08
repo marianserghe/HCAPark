@@ -102,7 +102,7 @@ export default function MembershipScreen() {
 
               <TouchableOpacity 
                 style={[styles.selectButton, tier.popular && styles.selectButtonPopular]}
-                onPress={() => router.push('/pay-dues' as never)}
+                onPress={() => router.push(`/payment?tier=${tier.id}` as never)}
               >
                 <Text style={styles.selectButtonText}>
                   {tier.id === 'lifetime' ? 'SELECT' : 'JOIN NOW'}

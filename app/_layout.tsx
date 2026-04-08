@@ -42,6 +42,14 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen 
+          name="payment" 
+          options={{ 
+            headerBackTitle: '',
+            headerStyle: { backgroundColor: Colors.primary },
+            headerTintColor: '#fff',
+          }} 
+        />
+        <Stack.Screen 
           name="admin" 
           options={{ 
             headerBackTitle: '',
