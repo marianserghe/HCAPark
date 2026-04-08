@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal, KeyboardAvoidingView, Platform, Image } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal, KeyboardAvoidingView, Platform } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from 'react-native-maps';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useRouter, Stack } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
@@ -18,7 +17,6 @@ export default function MapScreen() {
   const [mapType, setMapType] = useState<'standard' | 'satellite'>('standard');
   const [region, setRegion] = useState(PARK_LOCATION);
   const router = useRouter();
-  const insets = useSafeAreaInsets();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -62,13 +60,7 @@ export default function MapScreen() {
       <>
         <Stack.Screen 
           options={{
-            headerTitle: () => (
-              <Image 
-                source={require('@/assets/logo.png')}
-                style={styles.headerLogo}
-                tintColor="#fff"
-              />
-            ),
+            title: 'Pay Dues',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
           }}
@@ -86,13 +78,7 @@ export default function MapScreen() {
       <>
         <Stack.Screen 
           options={{
-            headerTitle: () => (
-              <Image 
-                source={require('@/assets/logo.png')}
-                style={styles.headerLogo}
-                tintColor="#fff"
-              />
-            ),
+            title: 'Pay Dues',
             headerStyle: { backgroundColor: Colors.primary },
             headerTintColor: '#fff',
           }}
@@ -111,20 +97,14 @@ export default function MapScreen() {
     <>
       <Stack.Screen 
         options={{
-          headerTitle: () => (
-            <Image 
-              source={require('@/assets/logo.png')}
-              style={styles.headerLogo}
-              tintColor="#fff"
-            />
-          ),
+          title: 'Pay Dues',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: '#fff',
         }}
       />
       <View style={styles.container}>
       {/* Stats Banner */}
-      <View style={[styles.statsBanner, { paddingTop: insets.top }]}>
+      <View style={styles.statsBanner}>
         <View style={styles.statItem}>
           <Text style={styles.statNumber}>{stats.percentagePaid}%</Text>
           <Text style={styles.statLabel}>PAID</Text>
@@ -234,12 +214,6 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 16,
-  },
-  headerLogo: {
-    width: 100,
-    height: 35,
-    resizeMode: 'contain',
   },
   centered: {
     flex: 1,
