@@ -56,7 +56,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="membership"
         options={{
-          title: 'Membership',
+          title: 'Join our Community',
           headerTitleStyle: { fontFamily: Fonts.headline, fontSize: 24 },
           tabBarIcon: ({ color, size }) => (
             <Feather name="award" size={size} color={color} />
@@ -66,7 +66,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="contact"
         options={{
-          title: 'Contact',
+          title: 'Get in Touch',
           headerTitleStyle: { fontFamily: Fonts.headline, fontSize: 24 },
           tabBarIcon: ({ color, size }) => (
             <Feather name="mail" size={size} color={color} />

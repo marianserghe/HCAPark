@@ -64,19 +64,12 @@ export default function MembershipScreen() {
     <>
       <Stack.Screen 
         options={{
-          title: 'Membership',
+          title: 'Join our Community',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: '#fff',
         }}
       />
       <ScrollView style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>JOIN OUR COMMUNITY</Text>
-          <Text style={styles.headerSubtitle}>
-            Your membership helps keep our park beautiful for everyone
-          </Text>
-        </View>
-
         <View style={styles.tiers}>
           {MEMBERSHIP_TIERS.map(tier => (
             <View 
@@ -134,26 +127,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-  },
-  header: {
-    padding: 24,
-    backgroundColor: Colors.primary,
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontFamily: Fonts.headline,
-    fontSize: 28,
-    color: '#fff',
-    letterSpacing: 2,
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  headerSubtitle: {
-    fontFamily: Fonts.body,
-    fontSize: 16,
-    color: 'rgba(255,255,255,0.9)',
-    textAlign: 'center',
-    lineHeight: 24,
   },
   tiers: {
     padding: 16,

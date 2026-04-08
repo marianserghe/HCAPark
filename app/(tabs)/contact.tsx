@@ -58,19 +58,12 @@ export default function ContactScreen() {
     <>
       <Stack.Screen 
         options={{
-          title: 'Contact Us',
+          title: 'Get in Touch',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: '#fff',
         }}
       />
       <ScrollView style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.headerTitle}>GET IN TOUCH</Text>
-          <Text style={styles.headerSubtitle}>
-            Have questions or feedback? We'd love to hear from you.
-          </Text>
-        </View>
-
         {/* Contact Form */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>SEND A MESSAGE</Text>
@@ -172,25 +165,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.background,
-  },
-  header: {
-    padding: 24,
-    backgroundColor: Colors.primary,
-    alignItems: 'center',
-  },
-  headerTitle: {
-    fontFamily: Fonts.headline,
-    fontSize: 28,
-    color: '#fff',
-    letterSpacing: 2,
-    marginBottom: 8,
-  },
-  headerSubtitle: {
-    fontFamily: Fonts.body,
-    fontSize: 16,
-    color: 'rgba(255,255,255,0.9)',
-    textAlign: 'center',
-    lineHeight: 22,
   },
   section: {
     padding: 16,
