@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Alert, TextInput, Modal, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import MapView, { Marker, Callout, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native';
@@ -76,6 +76,11 @@ export default function MapScreen() {
       <View style={styles.container}>
       {/* Stats Banner */}
       <View style={styles.statsBanner}>
+        <Image 
+          source={require('@/assets/icon.png')} 
+          style={styles.logo}
+          resizeMode="contain"
+        />
         <View style={styles.statItem}>
           <Text style={styles.statNumber}>{stats.percentagePaid}%</Text>
           <Text style={styles.statLabel}>PAID</Text>
@@ -238,6 +243,11 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.border,
     alignItems: 'center',
     justifyContent: 'space-evenly',
+  },
+  logo: {
+    width: 52,
+    height: 52,
+    marginHorizontal: 4,
   },
   statItem: {
     alignItems: 'center',
