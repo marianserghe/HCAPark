@@ -12,13 +12,22 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: Colors.textSecondary,
         tabBarStyle: styles.tabBar,
         tabBarLabelStyle: styles.tabBarLabel,
-        headerShown: false,
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: Colors.primary,
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontFamily: Fonts.headline,
+          fontSize: 24,
+        },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'HCA Park',
+          headerTitleStyle: { fontFamily: Fonts.headline, fontSize: 24 },
           tabBarIcon: ({ color, size }) => (
             <Feather name="home" size={size} color={color} />
           ),
@@ -28,6 +37,7 @@ export default function TabsLayout() {
         name="calendar"
         options={{
           title: 'Calendar',
+          headerTitleStyle: { fontFamily: Fonts.headline, fontSize: 24 },
           tabBarIcon: ({ color, size }) => (
             <Feather name="calendar" size={size} color={color} />
           ),
@@ -37,6 +47,7 @@ export default function TabsLayout() {
         name="pay-dues"
         options={{
           title: 'Pay Dues',
+          headerTitleStyle: { fontFamily: Fonts.headline, fontSize: 24 },
           tabBarIcon: ({ color, size }) => (
             <Feather name="map-pin" size={size} color={color} />
           ),
@@ -46,6 +57,7 @@ export default function TabsLayout() {
         name="membership"
         options={{
           title: 'Membership',
+          headerTitleStyle: { fontFamily: Fonts.headline, fontSize: 24 },
           tabBarIcon: ({ color, size }) => (
             <Feather name="award" size={size} color={color} />
           ),
@@ -55,6 +67,7 @@ export default function TabsLayout() {
         name="contact"
         options={{
           title: 'Contact',
+          headerTitleStyle: { fontFamily: Fonts.headline, fontSize: 24 },
           tabBarIcon: ({ color, size }) => (
             <Feather name="mail" size={size} color={color} />
           ),
