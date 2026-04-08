@@ -21,6 +21,7 @@ export default function TabsLayout() {
           fontFamily: Fonts.headline,
           fontSize: 24,
         },
+        headerBackTitleVisible: false,
       }}
     >
       <Tabs.Screen
